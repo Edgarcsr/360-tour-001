@@ -1,0 +1,8 @@
+.psv-tooltip {
+  background: #222 !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  font-size: 1.1em !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  overflow: hidden;
+}
