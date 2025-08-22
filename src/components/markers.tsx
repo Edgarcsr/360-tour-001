@@ -10,25 +10,6 @@ export interface MarkerButton {
 	html?: string;
 }
 
-// Função para criar um marker de botão (imagem)
-export const createButtonMarker = ({
-	id,
-	position,
-	image,
-	tooltip,
-	href,
-	size = { width: 64, height: 64 },
-	anchor = "center",
-}: MarkerButton) => ({
-	id,
-	position,
-	image,
-	anchor,
-	size,
-	tooltip,
-	data: { link: href },
-});
-
 // Função para criar um marker animado (círculo com animação)
 export const createAnimatedCircleMarker = ({
 	id,
@@ -48,22 +29,27 @@ export const createAnimatedCircleMarker = ({
 		tooltip,
 		data: { link: href },
 		html: `
-			<style>
-				@keyframes grow-fade {
-					0% { transform: scale(1); opacity: 0.6; }
-					70% { transform: scale(2.2); opacity: 0; }
-					100% { transform: scale(2.2); opacity: 0; }
-				}
-			</style>
-			<div style="position: relative; width: ${main}px; height: ${main}px; display: flex; align-items: center; justify-content: center;">
-				<div style="position: absolute; width: ${main - 2 * borderSize}px; height: ${main - 2 * borderSize}px; border-radius: 50%; border: ${borderSize}px solid #fff; background: transparent; opacity: 0.5; animation: grow-fade 1.6s infinite;"></div>
-				<div style="position: relative; width: ${main}px; height: ${main}px; border-radius: 50%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.18);"></div>
-			</div>
-		`,
+				<style>
+					@keyframes grow-fade {
+						0% { transform: scale(1); opacity: 0.6; }
+						70% { transform: scale(2.2); opacity: 0; }
+						100% { transform: scale(2.2); opacity: 0; }
+					}
+				</style>
+				<div class="relative flex items-center justify-center" style="width: ${main}px; height: ${main}px;">
+					   <div
+						   class="absolute rounded-full border opacity-50"
+						   style="width: ${main - 2 * borderSize}px; height: ${main - 2 * borderSize}px; border-width: ${borderSize}px; border-color: #fff; animation: grow-fade 1.6s infinite; background: transparent;"
+					   ></div>
+					   <div
+						   class="relative rounded-full shadow-lg"
+						   style="width: ${main}px; height: ${main}px; background-color: #fff;"
+					   ></div>
+				</div>
+			`,
 	};
 };
 
-// Função para adicionar eventos de clique aos markers
 export const setupMarkerEvents = (
 	markersPlugin: any,
 	markers: MarkerButton[],

@@ -1,7 +1,9 @@
 import { CompassPlugin } from "@photo-sphere-viewer/compass-plugin";
 import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
 import { LensflarePlugin } from "photo-sphere-viewer-lensflare-plugin";
+import { useState } from "react";
 import { ReactPhotoSphereViewer } from "react-photo-sphere-viewer";
+import { Callout } from "./callouts";
 
 interface PhotoSphereViewerProps {
 	src: string;
@@ -14,16 +16,27 @@ interface PhotoSphereViewerProps {
 	width?: string;
 }
 
-export const PhotoSphereViewer = ({
-	src,
-	markers = [],
-	callouts = [],
-	lensflares = [],
-	compass = true,
-	onMarkerClick,
-	height = "100vh",
-	width = "100%",
-}: PhotoSphereViewerProps) => {
+export function PhotoSphereViewer(props: PhotoSphereViewerProps) {
+	const {
+		src,
+		markers = [],
+		callouts = [],
+		lensflares = [],
+		compass = true,
+		onMarkerClick,
+		height = "100vh",
+		width = "100%",
+	} = props;
+
+	const [camera, setCamera] = useState<{ yaw: number; pitch: number }>({
+		yaw: 0,
+		pitch: 0,
+	});
+
+	function parseDeg(str: string) {
+		return parseFloat(str.replace("deg", ""));
+	}
+
 	const handleReady = (instance: any) => {
 		const markersPlugin = instance.getPlugin(MarkersPlugin);
 		if (markersPlugin && onMarkerClick) {
@@ -33,40 +46,44 @@ export const PhotoSphereViewer = ({
 		}
 	};
 
-	const plugins = [
-		// Lensflare Plugin
-		...(lensflares.length > 0 ? [[LensflarePlugin, { lensflares }]] : []),
+	const handlePositionChange = (lat: number, lng: number) => {
+		// converte radianos para graus
+		const yawDeg = (lng * 180) / Math.PI;
+		const pitchDeg = (lat * 180) / Math.PI;
+		setCamera({ yaw: yawDeg, pitch: pitchDeg });
+	};
 
-		// Markers Plugin
-		...(markers.length > 0 || callouts.length > 0
-			? [[MarkersPlugin, { markers: [...markers, ...callouts] }]]
-			: []),
-
-		// Compass Plugin
-		...(compass
-			? [
-					[
-						CompassPlugin,
-						{
-							hotspots: [
-								{ yaw: "0deg" },
-								{ yaw: "90deg" },
-								{ yaw: "180deg" },
-								{ yaw: "270deg" },
-							],
-						},
-					],
-				]
-			: []),
-	];
+	const plugins = [];
+	if (lensflares.length > 0) plugins.push([LensflarePlugin, { lensflares }]);
+	if (markers.length > 0 || callouts.length > 0)
+		plugins.push([MarkersPlugin, { markers: [...markers, ...callouts] }]);
+	if (compass)
+		plugins.push([
+			CompassPlugin,
+			{
+				hotspots: [
+					{ yaw: "0deg" },
+					{ yaw: "90deg" },
+					{ yaw: "180deg" },
+					{ yaw: "270deg" },
+				],
+			},
+		]);
 
 	return (
-		<ReactPhotoSphereViewer
-			plugins={plugins}
-			src={src}
-			height={height}
-			width={width}
-			onReady={handleReady}
-		/>
+		<div style={{ position: "relative", width, height }}>
+			<ReactPhotoSphereViewer
+				plugins={plugins}
+				src={src}
+				height={height}
+				width={width}
+				onReady={handleReady}
+				onPositionChange={handlePositionChange}
+			/>
+			{/* Callouts React para controlar ativação */}
+			{callouts.map((c) => (
+				<Callout key={c.id} {...c} camera={camera} />
+			))}
+		</div>
 	);
-};
+}
