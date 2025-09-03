@@ -197,19 +197,20 @@ export function generateCalloutHTML(
 			.psv-callout__hline-left {
 				background: #fff;
 				height: 2px;
-				width: ${lineWidth}px; /* Largura fixa */
-				opacity: 0; /* Estado inicial sempre oculto */
+				width: ${lineWidth}px;
+				opacity: 0;
 				margin-left: 0;
 				margin-right: 0;
+				margin-bottom: 20px;
 				display: inline-block;
 				border-radius: 8px;
-				transform-origin: right; /* Cresce da direita para a esquerda */
-				transform: scaleX(0); /* Estado inicial sem largura */
-				animation: none; /* Sem animação por padrão */
+				transform-origin: right;
+				transform: scaleX(0);
+				animation: none;
 			}
 			
 			.psv-callout.psv-callout--active .psv-callout__hline-left {
-				opacity: 1; /* Torna visível quando ativo */
+				opacity: 1;
 				animation: line-grow-left 0.6s ease-out forwards;
 			}
 			
@@ -239,8 +240,8 @@ export function generateCalloutHTML(
 
 			/* ========== ESTILOS DO TEXTO ========== */
 			.psv-callout__text-left {
-				opacity: 0; /* Estado inicial sempre oculto */
-				margin-top: 8px;
+				opacity: 0;
+				margin-top: -12px;
 				color: #fff;
 				background: #000;
 				border-radius: 2px;
@@ -251,8 +252,7 @@ export function generateCalloutHTML(
 				box-shadow: 0 2px 8px rgba(0,0,0,0.18);
 				display: block;
 				animation-fill-mode: both;
-				transform: translateX(30px); /* Estado inicial fora da tela (oposto ao right) */
-				animation: none; /* Sem animação por padrão */
+				animation: none;
 			}
 			
 			.psv-callout.psv-callout--active .psv-callout__text-left {
@@ -373,7 +373,7 @@ export function generateCalloutHTML(
 		<div style="position: relative; display: flex; flex-direction: column; align-items: center; min-width: 120px; min-height: ${lineWidth + 60}px;">
 			
 			<!-- Texto do callout (no topo) -->
-			<div style="position: absolute; top: ${16 - lineWidth}px; left: 50%; transform: translateX(-50%); display: flex; justify-content: center;">
+			<div style="position: absolute; bottom: ${lineWidth + 8}px; left: 50%; transform: translateX(-50%); display: flex; justify-content: center;">
 				<span class="psv-callout__text-up">${text}</span>
 			</div>
 			
@@ -488,7 +488,7 @@ export function generateCalloutHTML(
 			</div>
 			
 			<!-- Texto do callout (embaixo) -->
-			<div style="position: absolute; bottom: ${16 - lineWidth}px; left: 50%; transform: translateX(-50%); display: flex; justify-content: center;">
+			<div style="position: absolute; top: ${lineWidth + 8}px; left: 50%; transform: translateX(-50%); display: flex; justify-content: center;">
 				<span class="psv-callout__text-down">${text}</span>
 			</div>
 			
