@@ -16,10 +16,10 @@ function App() {
 	// Definindo callouts no App
 	const lighthouseCallout = createCallout({
 		id: "callout-1",
-		position: { yaw: "-47.6deg", pitch: "40.4deg" },
+		position: { yaw: "-47.2deg", pitch: "40.4deg" },
 		text: "Farol famoso",
-		anchor: "top left",
-		direction: "SE",
+		anchor: "bottom left",
+		direction: "NE",
 	});
 
 	// Lensflares configuration
