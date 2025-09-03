@@ -61,17 +61,18 @@ export function generateCalloutHTML(
 			.psv-callout__hline {
 				background: #fff;
 				height: 2px;
-				width: 0; /* Estado inicial sempre oculto */
-				opacity: 0; /* Adiciona opacity 0 para garantir que esteja oculto */
+				width: 0;
+				opacity: 0;
 				margin-left: 0;
 				margin-right: 0;
+				margin-bottom: 20px;
 				display: inline-block;
 				border-radius: 8px;
-				animation: none; /* Sem animação por padrão */
+				animation: none;
 			}
 			
 			.psv-callout.psv-callout--active .psv-callout__hline {
-				opacity: 1; /* Torna visível quando ativo */
+				opacity: 1;
 				animation: line-grow 0.6s ease-out forwards;
 			}
 			
@@ -102,7 +103,7 @@ export function generateCalloutHTML(
 			/* ========== ESTILOS DO TEXTO ========== */
 			.psv-callout__text {
 				opacity: 0; /* Estado inicial sempre oculto */
-				margin-top: 8px;
+				margin-top: -12px;
 				color: #fff;
 				background: #000;
 				border-radius: 2px;
