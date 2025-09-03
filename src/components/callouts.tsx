@@ -1,6 +1,9 @@
 import type React from "react";
 import { useEffect, useState } from "react";
-import { generateCalloutHTML, type CalloutConfig } from "./callouts/generate-callout-html.ts";
+import {
+	type CalloutConfig,
+	generateCalloutHTML,
+} from "./callouts/generate-callout-html.ts";
 
 // Função utilitária para converter string 'deg' para número
 function parseDeg(str: string) {
@@ -18,7 +21,7 @@ export const Callout: React.FC<{
 }> = ({ id, position, text, anchor = "left", direction = "right", camera }) => {
 	const [wasActive, setWasActive] = useState(false);
 	const [elementReady, setElementReady] = useState(false);
-	
+
 	// Lógica para saber se está sendo visto
 	const yaw = parseDeg(position.yaw);
 	const pitch = parseDeg(position.pitch);
@@ -43,7 +46,7 @@ export const Callout: React.FC<{
 	// Adiciona/remove classe no DOM para cada marker individualmente
 	useEffect(() => {
 		if (!elementReady) return;
-		
+
 		const el = document.getElementById(`psv-marker-${id}`);
 		if (el) {
 			if (isActive && !wasActive) {
@@ -56,7 +59,7 @@ export const Callout: React.FC<{
 				el.classList.remove("psv-callout--active");
 				el.classList.add("psv-callout--exiting");
 				setWasActive(false);
-				
+
 				// Remove a classe exiting após a animação terminar
 				setTimeout(() => {
 					const element = document.getElementById(`psv-marker-${id}`);
@@ -71,7 +74,6 @@ export const Callout: React.FC<{
 	return null;
 };
 
-
 // Função para criar um callout
 export const createCallout = ({
 	id,
@@ -79,7 +81,7 @@ export const createCallout = ({
 	text,
 	anchor = "left",
 	direction = "right",
-	size = 4, // Valor padrão para ter 128px (8 * 16)
+	size = 8,
 }: CalloutConfig) => ({
 	id,
 	position,

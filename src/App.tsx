@@ -18,8 +18,8 @@ function App() {
 		id: "callout-1",
 		position: { yaw: "-47.6deg", pitch: "40.4deg" },
 		text: "Farol famoso",
-		anchor: "top",
-		direction: "down",
+		anchor: "right",
+		direction: "left",
 	});
 
 	// Lensflares configuration
