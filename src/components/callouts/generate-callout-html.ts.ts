@@ -765,6 +765,276 @@ export function generateCalloutHTML(
 		</div>
 	`;
 
+		case "NW":
+			return `
+		<style>
+			/* ========== ANIMAÇÕES KEYFRAMES ========== */
+			@keyframes grow-fade {
+				0% { transform: scale(1); opacity: 0.6; }
+				70% { transform: scale(2.2); opacity: 0; }
+				100% { transform: scale(2.2); opacity: 0; }
+			}
+			
+			@keyframes diagonal-line-grow-nw {
+				0% { transform: scaleX(0); opacity: 0; }
+				100% { transform: scaleX(1); opacity: 1; }
+			}
+			
+			@keyframes diagonal-line-shrink-nw {
+				0% { transform: scaleX(1); opacity: 1; }
+				100% { transform: scaleX(0); opacity: 0; }
+			}
+			
+			@keyframes vline-grow {
+				0% { height: 0; opacity: 0; }
+				100% { height: 32px; opacity: 1; }
+			}
+			
+			@keyframes vline-shrink {
+				0% { height: 32px; opacity: 1; }
+				100% { height: 0; opacity: 0; }
+			}
+			
+			@keyframes flag-slide-in-nw {
+				0% { opacity: 0; transform: translate(20px, 20px); }
+				100% { opacity: 1; transform: translate(0, 0); }
+			}
+			
+			@keyframes flag-slide-out-nw {
+				0% { opacity: 1; transform: translate(0, 0); }
+				100% { opacity: 0; transform: translate(20px, 20px); }
+			}
+
+			/* ========== ESTILOS DA LINHA DIAGONAL ========== */
+			.psv-callout__diagonal-line-nw {
+				background: #fff;
+				width: 100%;
+				height: 100%;
+				opacity: 0; /* Estado inicial sempre oculto */
+				border-radius: 1px;
+				transform-origin: right center; /* Cresce da direita para esquerda */
+				transform: scaleX(0); /* Estado inicial sem largura */
+				animation: none; /* Sem animação por padrão */
+				display: block;
+			}
+			
+			.psv-callout.psv-callout--active .psv-callout__diagonal-line-nw {
+				opacity: 1; /* Torna visível quando ativo */
+				animation: diagonal-line-grow-nw 0.6s ease-out forwards;
+			}
+			
+			.psv-callout.psv-callout--exiting .psv-callout__diagonal-line-nw {
+				animation: diagonal-line-shrink-nw 0.3s ease-in forwards;
+			}
+
+			/* ========== ESTILOS DA LINHA VERTICAL ========== */
+			.psv-callout__vline-nw {
+				background: #fff;
+				width: 2px;
+				height: 0; /* Estado inicial sempre oculto */
+				opacity: 0; /* Adiciona opacity 0 para garantir que esteja oculto */
+				border-radius: 1px;
+				animation: none; /* Sem animação por padrão */
+				display: block;
+			}
+			
+			.psv-callout.psv-callout--active .psv-callout__vline-nw {
+				opacity: 1; /* Torna visível quando ativo */
+				animation: vline-grow 0.4s 0.6s cubic-bezier(.4,1.4,.6,1) forwards; /* Delay para aparecer após a linha diagonal terminar */
+			}
+			
+			.psv-callout.psv-callout--exiting .psv-callout__vline-nw {
+				animation: vline-shrink 0.2s cubic-bezier(.4,1.4,.6,1) forwards;
+			}
+
+			/* ========== ESTILOS DO TEXTO ========== */
+			.psv-callout__text-nw {
+				opacity: 0; /* Estado inicial sempre oculto */
+				color: #fff;
+				background: #000;
+				border-radius: 2px;
+				padding: 4px 10px;
+				font-size: 15px;
+				font-family: Arial, Helvetica, sans-serif;
+				white-space: nowrap;
+				box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+				display: block;
+				animation-fill-mode: both;
+				transform: translate(20px, 20px); /* Estado inicial fora da tela */
+				animation: none; /* Sem animação por padrão */
+			}
+			
+			.psv-callout.psv-callout--active .psv-callout__text-nw {
+				animation: flag-slide-in-nw 0.5s 0.6s cubic-bezier(.4,1.4,.6,1) both;
+			}
+			
+			.psv-callout.psv-callout--exiting .psv-callout__text-nw {
+				animation: flag-slide-out-nw 0.2s cubic-bezier(.4,1.4,.6,1) both;
+			}
+		</style>
+
+		<!-- ========== ESTRUTURA HTML DO CALLOUT (NW - NORTHWEST) ========== -->
+		<div style="position: relative; display: flex; align-items: flex-start; min-width: 120px; min-height: 60px;">
+			
+			<!-- Círculo principal com animação pulsante -->
+			<div style="position: absolute; top: ${-main / 2}px; right: ${-main / 2}px; width: ${main}px; height: ${main}px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index:2;">
+				<!-- Círculo pulsante (animação grow-fade) -->
+				<div style="position: absolute; width: ${main - 2 * borderSize}px; height: ${main - 2 * borderSize}px; border-radius: 50%; border: ${borderSize}px solid #fff; background: transparent; opacity: 0.5; animation: grow-fade 1.6s infinite;"></div>
+				<!-- Círculo principal -->
+				<div style="position: relative; width: ${main}px; height: ${main}px; border-radius: 50%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.18);"></div>
+			</div>
+			
+			<!-- Linha diagonal (indo para noroeste) -->
+			<div style="position: absolute; right: ${0}px; top: ${0}px; width: ${lineWidth}px; height: 2px; pointer-events: none; transform-origin: right center; transform: rotate(45deg);">
+				<div class="psv-callout__diagonal-line-nw" style="width: 100%; height: 100%;"></div>
+			</div>
+			
+			<!-- Linha vertical (no final da linha diagonal) -->
+			<div style="position: absolute; right: ${lineWidth * Math.cos(Math.PI / 4) - 1}px; top: ${-lineWidth * Math.sin(Math.PI / 4) - 16}px; width: 2px; height: 32px; pointer-events: none;">
+				<div class="psv-callout__vline-nw" style="width: 2px; height: 0; opacity: 0;"></div>
+			</div>
+			
+			<!-- Texto do callout -->
+			<span class="psv-callout__text-nw" style="position: absolute; right: ${lineWidth * Math.cos(Math.PI / 4) + 8}px; top: ${-lineWidth * Math.sin(Math.PI / 4) - 12}px; transform: translateX(50%);">${text}</span>
+			
+		</div>
+	`;
+
+		case "SW":
+			return `
+		<style>
+			/* ========== ANIMAÇÕES KEYFRAMES ========== */
+			@keyframes grow-fade {
+				0% { transform: scale(1); opacity: 0.6; }
+				70% { transform: scale(2.2); opacity: 0; }
+				100% { transform: scale(2.2); opacity: 0; }
+			}
+			
+			@keyframes diagonal-line-grow-sw {
+				0% { transform: scaleX(0); opacity: 0; }
+				100% { transform: scaleX(1); opacity: 1; }
+			}
+			
+			@keyframes diagonal-line-shrink-sw {
+				0% { transform: scaleX(1); opacity: 1; }
+				100% { transform: scaleX(0); opacity: 0; }
+			}
+			
+			@keyframes vline-grow {
+				0% { height: 0; opacity: 0; }
+				100% { height: 32px; opacity: 1; }
+			}
+			
+			@keyframes vline-shrink {
+				0% { height: 32px; opacity: 1; }
+				100% { height: 0; opacity: 0; }
+			}
+			
+			@keyframes flag-slide-in-sw {
+				0% { opacity: 0; transform: translate(20px, -20px); }
+				100% { opacity: 1; transform: translate(0, 0); }
+			}
+			
+			@keyframes flag-slide-out-sw {
+				0% { opacity: 1; transform: translate(0, 0); }
+				100% { opacity: 0; transform: translate(20px, -20px); }
+			}
+
+			/* ========== ESTILOS DA LINHA DIAGONAL ========== */
+			.psv-callout__diagonal-line-sw {
+				background: #fff;
+				width: 100%;
+				height: 100%;
+				opacity: 0; /* Estado inicial sempre oculto */
+				border-radius: 1px;
+				transform-origin: right center; /* Cresce da direita para esquerda */
+				transform: scaleX(0); /* Estado inicial sem largura */
+				animation: none; /* Sem animação por padrão */
+				display: block;
+			}
+			
+			.psv-callout.psv-callout--active .psv-callout__diagonal-line-sw {
+				opacity: 1; /* Torna visível quando ativo */
+				animation: diagonal-line-grow-sw 0.6s ease-out forwards;
+			}
+			
+			.psv-callout.psv-callout--exiting .psv-callout__diagonal-line-sw {
+				animation: diagonal-line-shrink-sw 0.3s ease-in forwards;
+			}
+
+			/* ========== ESTILOS DA LINHA VERTICAL ========== */
+			.psv-callout__vline-sw {
+				background: #fff;
+				width: 2px;
+				height: 0; /* Estado inicial sempre oculto */
+				opacity: 0; /* Adiciona opacity 0 para garantir que esteja oculto */
+				border-radius: 1px;
+				animation: none; /* Sem animação por padrão */
+				display: block;
+			}
+			
+			.psv-callout.psv-callout--active .psv-callout__vline-sw {
+				opacity: 1; /* Torna visível quando ativo */
+				animation: vline-grow 0.4s 0.6s cubic-bezier(.4,1.4,.6,1) forwards; /* Delay para aparecer após a linha diagonal terminar */
+			}
+			
+			.psv-callout.psv-callout--exiting .psv-callout__vline-sw {
+				animation: vline-shrink 0.2s cubic-bezier(.4,1.4,.6,1) forwards;
+			}
+
+			/* ========== ESTILOS DO TEXTO ========== */
+			.psv-callout__text-sw {
+				opacity: 0; /* Estado inicial sempre oculto */
+				color: #fff;
+				background: #000;
+				border-radius: 2px;
+				padding: 4px 10px;
+				font-size: 15px;
+				font-family: Arial, Helvetica, sans-serif;
+				white-space: nowrap;
+				box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+				display: block;
+				animation-fill-mode: both;
+				transform: translate(20px, -20px); /* Estado inicial fora da tela */
+				animation: none; /* Sem animação por padrão */
+			}
+			
+			.psv-callout.psv-callout--active .psv-callout__text-sw {
+				animation: flag-slide-in-sw 0.5s 0.6s cubic-bezier(.4,1.4,.6,1) both;
+			}
+			
+			.psv-callout.psv-callout--exiting .psv-callout__text-sw {
+				animation: flag-slide-out-sw 0.2s cubic-bezier(.4,1.4,.6,1) both;
+			}
+		</style>
+
+		<!-- ========== ESTRUTURA HTML DO CALLOUT (SW - SOUTHWEST) ========== -->
+		<div style="position: relative; display: flex; align-items: flex-start; min-width: 120px; min-height: 60px;">
+			
+			<!-- Círculo principal com animação pulsante -->
+			<div style="position: absolute; top: ${-main / 2}px; right: ${-main / 2}px; width: ${main}px; height: ${main}px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index:2;">
+				<!-- Círculo pulsante (animação grow-fade) -->
+				<div style="position: absolute; width: ${main - 2 * borderSize}px; height: ${main - 2 * borderSize}px; border-radius: 50%; border: ${borderSize}px solid #fff; background: transparent; opacity: 0.5; animation: grow-fade 1.6s infinite;"></div>
+				<!-- Círculo principal -->
+				<div style="position: relative; width: ${main}px; height: ${main}px; border-radius: 50%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.18);"></div>
+			</div>
+			
+			<!-- Linha diagonal (indo para sudoeste) -->
+			<div style="position: absolute; right: ${0}px; top: ${0}px; width: ${lineWidth}px; height: 2px; pointer-events: none; transform-origin: right center; transform: rotate(-45deg);">
+				<div class="psv-callout__diagonal-line-sw" style="width: 100%; height: 100%;"></div>
+			</div>
+			
+			<!-- Linha vertical (no final da linha diagonal) -->
+			<div style="position: absolute; right: ${lineWidth * Math.cos(-Math.PI / 4) - 1}px; top: ${-lineWidth * Math.sin(-Math.PI / 4) - 16}px; width: 2px; height: 32px; pointer-events: none;">
+				<div class="psv-callout__vline-sw" style="width: 2px; height: 0; opacity: 0;"></div>
+			</div>
+			
+			<!-- Texto do callout -->
+			<span class="psv-callout__text-sw" style="position: absolute; right: ${lineWidth * Math.cos(-Math.PI / 4) + 8}px; top: ${-lineWidth * Math.sin(-Math.PI / 4) - 8}px; transform: translateX(50%);">${text}</span>
+			
+		</div>
+	`;
+
 		default:
 			return `<div>Invalid direction: "${direction}"</div>`;
 	}

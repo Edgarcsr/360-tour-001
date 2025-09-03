@@ -81,7 +81,7 @@ export const createCallout = ({
 	text,
 	anchor = "left",
 	direction = "right",
-	size = 3,
+	size = 6,
 }: CalloutConfig) => ({
 	id,
 	position,
