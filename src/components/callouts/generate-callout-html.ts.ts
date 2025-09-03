@@ -389,8 +389,106 @@ export function generateCalloutHTML(text: string, direction: string, main: numbe
 	`;
 
         case 'down':
-            // TODO: Implement down direction
-            return `<div>Direction "${direction}" not implemented yet</div>`;
+            return `
+		<style>
+			/* ========== ANIMAÇÕES KEYFRAMES ========== */
+			@keyframes grow-fade {
+				0% { transform: scale(1); opacity: 0.6; }
+				70% { transform: scale(2.2); opacity: 0; }
+				100% { transform: scale(2.2); opacity: 0; }
+			}
+			
+			@keyframes vline-grow-down {
+				0% { transform: scaleY(0); opacity: 0; }
+				100% { transform: scaleY(1); opacity: 1; }
+			}
+			
+			@keyframes vline-shrink-down {
+				0% { transform: scaleY(1); opacity: 1; }
+				100% { transform: scaleY(0); opacity: 0; }
+			}
+			
+			@keyframes flag-slide-in-down {
+				0% { opacity: 0; transform: translateY(-30px); }
+				100% { opacity: 1; transform: translateY(0); }
+			}
+			
+			@keyframes flag-slide-out-down {
+				0% { opacity: 1; transform: translateY(0); }
+				100% { opacity: 0; transform: translateY(-30px); }
+			}
+
+			/* ========== ESTILOS DA LINHA VERTICAL ========== */
+			.psv-callout__vline-down {
+				background: #fff;
+				width: 2px;
+				height: ${lineWidth}px; /* Altura fixa */
+				opacity: 0; /* Estado inicial sempre oculto */
+				border-radius: 1px;
+				transform-origin: top; /* Cresce de cima para baixo */
+				transform: scaleY(0); /* Estado inicial sem altura */
+				animation: none; /* Sem animação por padrão */
+				display: block;
+			}
+			
+			.psv-callout.psv-callout--active .psv-callout__vline-down {
+				opacity: 1; /* Torna visível quando ativo */
+				animation: vline-grow-down 0.6s ease-out forwards;
+			}
+			
+			.psv-callout.psv-callout--exiting .psv-callout__vline-down {
+				animation: vline-shrink-down 0.3s ease-in forwards;
+			}
+
+			/* ========== ESTILOS DO TEXTO ========== */
+			.psv-callout__text-down {
+				opacity: 0; /* Estado inicial sempre oculto */
+				color: #fff;
+				background: #000;
+				border-radius: 2px;
+				padding: 4px 10px;
+				font-size: 15px;
+				font-family: Arial, Helvetica, sans-serif;
+				white-space: nowrap;
+				box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+				display: inline-block;
+				animation-fill-mode: both;
+				transform: translateY(-30px); /* Estado inicial fora da tela */
+				animation: none; /* Sem animação por padrão */
+			}
+			
+			.psv-callout.psv-callout--active .psv-callout__text-down {
+				animation: flag-slide-in-down 0.5s 0.6s cubic-bezier(.4,1.4,.6,1) both;
+			}
+			
+			.psv-callout.psv-callout--exiting .psv-callout__text-down {
+				animation: flag-slide-out-down 0.2s cubic-bezier(.4,1.4,.6,1) both;
+			}
+		</style>
+
+		<!-- ========== ESTRUTURA HTML DO CALLOUT (DOWN) ========== -->
+		<div style="position: relative; display: flex; flex-direction: column; align-items: center; min-width: 120px; min-height: ${lineWidth + 60}px;">
+			
+			<!-- Círculo principal com animação pulsante (no topo) -->
+			<div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: ${main}px; height: ${main}px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index:2;">
+				<!-- Círculo pulsante (animação grow-fade) -->
+				<div style="position: absolute; width: ${main - 2 * borderSize}px; height: ${main - 2 * borderSize}px; border-radius: 50%; border: ${borderSize}px solid #fff; background: transparent; opacity: 0.5; animation: grow-fade 1.6s infinite;"></div>
+				<!-- Círculo principal -->
+				<div style="position: relative; width: ${main}px; height: ${main}px; border-radius: 50%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.18);"></div>
+			</div>
+			
+			<!-- Linha vertical (do círculo ao texto) -->
+			<div style="position: absolute; top: ${main/2}px; left: 50%; transform: translateX(-50%); width: 2px; height: ${lineWidth}px; pointer-events: none;">
+				<div class="psv-callout__vline-down" style="width: 2px; height: ${lineWidth}px;"></div>
+			</div>
+			
+			<!-- Texto do callout (embaixo) -->
+			<div style="position: absolute; bottom: ${16}px; left: 50%; transform: translateX(-50%); display: flex; justify-content: center;">
+				<span class="psv-callout__text-down">${text}</span>
+			</div>
+			
+		</div>
+	`;
 
         default:
             return `<div>Invalid direction: "${direction}"</div>`;
