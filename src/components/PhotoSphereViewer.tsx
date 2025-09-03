@@ -1,4 +1,3 @@
-import { CompassPlugin } from "@photo-sphere-viewer/compass-plugin";
 import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
 import { LensflarePlugin } from "photo-sphere-viewer-lensflare-plugin";
 import { useState } from "react";
@@ -33,10 +32,6 @@ export function PhotoSphereViewer(props: PhotoSphereViewerProps) {
 		pitch: 0,
 	});
 
-	function parseDeg(str: string) {
-		return parseFloat(str.replace("deg", ""));
-	}
-
 	const handleReady = (instance: any) => {
 		const markersPlugin = instance.getPlugin(MarkersPlugin);
 		if (markersPlugin && onMarkerClick) {
@@ -57,18 +52,6 @@ export function PhotoSphereViewer(props: PhotoSphereViewerProps) {
 	if (lensflares.length > 0) plugins.push([LensflarePlugin, { lensflares }]);
 	if (markers.length > 0 || callouts.length > 0)
 		plugins.push([MarkersPlugin, { markers: [...markers, ...callouts] }]);
-	if (compass)
-		plugins.push([
-			CompassPlugin,
-			{
-				hotspots: [
-					{ yaw: "0deg" },
-					{ yaw: "90deg" },
-					{ yaw: "180deg" },
-					{ yaw: "270deg" },
-				],
-			},
-		]);
 
 	return (
 		<div style={{ position: "relative", width, height }}>

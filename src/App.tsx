@@ -13,13 +13,26 @@ function App() {
 		href: "/algum-lugar",
 	});
 
-	// Definindo callouts no App
+	// Definindo callouts no App - demonstrando o mapeamento automático
 	const lighthouseCallout = createCallout({
 		id: "callout-1",
 		position: { yaw: "-47.2deg", pitch: "40.4deg" },
 		text: "Farol famoso",
-		anchor: "left",
-		direction: "right",
+		direction: "right", // Anchor será automaticamente "left"
+	});
+
+	const buildingCallout = createCallout({
+		id: "callout-2",
+		position: { yaw: "90deg", pitch: "20deg" },
+		text: "Prédio alto",
+		direction: "NE", // Anchor será automaticamente "right"
+	});
+
+	const skyCallout = createCallout({
+		id: "callout-3",
+		position: { yaw: "0deg", pitch: "60deg" },
+		text: "Céu azul",
+		direction: "down", // Anchor será automaticamente "top"
 	});
 
 	// Lensflares configuration
@@ -46,7 +59,7 @@ function App() {
 		<PhotoSphereViewer
 			src="key-biscayne-4.jpg"
 			markers={[houseMarker]}
-			callouts={[lighthouseCallout]}
+			callouts={[lighthouseCallout, buildingCallout, skyCallout]}
 			lensflares={lensflares}
 			compass={true}
 			onMarkerClick={handleMarkerClick}

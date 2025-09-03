@@ -1,9 +1,11 @@
+import type { Direction } from "./direction-anchor-mapping";
+
 export interface CalloutConfig {
 	id: string;
 	position: { yaw: string; pitch: string };
 	text: string;
 	anchor?: string;
-	direction?: "right" | "left" | "up" | "down" | "NE" | "NW" | "SE" | "SW";
+	direction?: Direction;
 	size?: number; // Multiplicador para tamanho da linha (size * 16 = pixels)
 }
 

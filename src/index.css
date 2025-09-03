@@ -1,16 +1,16 @@
-.psv-tooltip {
-  background: #222 !important;
-  color: #fff !important;
-  border-radius: 2px !important;
-  font-size: 1.1em !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+@import "tailwindcss";
+
+/* Aumenta especificidade para sobrescrever estilos do Photo Sphere Viewer */
+div .psv-tooltip,
+.psv-container .psv-tooltip {
+  background: #222;
+  color: #fff;
+  border-radius: 2px;
+  font-size: 1.1em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   overflow: hidden;
 }
 
 body {
   margin: 0;
 }
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;

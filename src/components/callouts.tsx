@@ -1,5 +1,6 @@
 import type React from "react";
 import { useEffect, useState } from "react";
+import { getAnchorForDirection } from "./callouts/direction-anchor-mapping";
 import {
 	type CalloutConfig,
 	generateCalloutHTML,
@@ -14,11 +15,8 @@ function parseDeg(str: string) {
 export const Callout: React.FC<{
 	id: string;
 	position: { yaw: string; pitch: string };
-	text: string;
-	anchor?: string;
-	direction?: "right" | "left" | "up" | "down";
 	camera: { yaw: number; pitch: number };
-}> = ({ id, position, text, anchor = "left", direction = "right", camera }) => {
+}> = ({ id, position, camera }) => {
 	const [wasActive, setWasActive] = useState(false);
 	const [elementReady, setElementReady] = useState(false);
 
@@ -79,14 +77,19 @@ export const createCallout = ({
 	id,
 	position,
 	text,
-	anchor = "left",
+	anchor,
 	direction = "right",
 	size = 6,
-}: CalloutConfig) => ({
-	id,
-	position,
-	html: generateCalloutHTML(text, direction, 18, 2, size),
-	anchor,
-	className: "psv-callout",
-	text,
-});
+}: CalloutConfig) => {
+	// Se anchor não foi especificado, usa o mapeamento automático baseado na direction
+	const finalAnchor = anchor || getAnchorForDirection(direction);
+
+	return {
+		id,
+		position,
+		html: generateCalloutHTML(text, direction, 18, 2, size),
+		anchor: finalAnchor,
+		className: "psv-callout",
+		text,
+	};
+};
