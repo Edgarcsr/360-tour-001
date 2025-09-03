@@ -615,17 +615,17 @@ export function generateCalloutHTML(
 			</div>
 			
 			<!-- Linha diagonal (indo para sudeste) -->
-			<div style="position: absolute; left: ${main}px; top: ${main / 2}px; width: ${lineWidth}px; height: 2px; pointer-events: none; transform-origin: left center; transform: rotate(45deg);">
+			<div style="position: absolute; left: ${main / 2}px; top: ${main / 2}px; width: ${lineWidth}px; height: 2px; pointer-events: none; transform-origin: left center; transform: rotate(45deg);">
 				<div class="psv-callout__diagonal-line-se" style="width: 100%; height: 100%;"></div>
 			</div>
 			
 			<!-- Linha vertical (no final da linha diagonal) -->
-			<div style="position: absolute; left: ${main + lineWidth * Math.cos(Math.PI / 4)}px; top: ${main / 2 + lineWidth * Math.sin(Math.PI / 4)}px; width: 2px; height: 32px; pointer-events: none;">
+			<div style="position: absolute; left: ${main / 2 + lineWidth * Math.cos(Math.PI / 4) - 1}px; top: ${main / 2 + lineWidth * Math.sin(Math.PI / 4) - 16}px; width: 2px; height: 32px; pointer-events: none;">
 				<div class="psv-callout__vline-se" style="width: 2px; height: 0; opacity: 0;"></div>
 			</div>
 			
 			<!-- Texto do callout -->
-			<span class="psv-callout__text-se" style="position: absolute; left: ${main + lineWidth * Math.cos(Math.PI / 4) + 16}px; top: ${main / 2 + lineWidth * Math.sin(Math.PI / 4) + 24}px;">${text}</span>
+			<span class="psv-callout__text-se" style="position: absolute; left: ${main / 2 + lineWidth * Math.cos(Math.PI / 4) + 8}px; top: ${main / 2 + lineWidth * Math.sin(Math.PI / 4) - 12}px; transform: translateX(-50%);">${text}</span>
 			
 		</div>
 	`;
