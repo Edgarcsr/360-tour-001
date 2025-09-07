@@ -13,12 +13,13 @@ function App() {
 		href: "/algum-lugar",
 	});
 
-	// Definindo callouts no App - demonstrando o mapeamento automático
+	// Definindo callouts no App - demonstrando o mapeamento automático e diferentes tamanhos
 	const lighthouseCallout = createCallout({
 		id: "callout-1",
 		position: { yaw: "-47.2deg", pitch: "40.4deg" },
 		text: "Farol famoso",
 		direction: "right", // Anchor será automaticamente "left"
+		size: 2, // Linha de 128px (8 * 16)
 	});
 
 	const buildingCallout = createCallout({
@@ -26,6 +27,7 @@ function App() {
 		position: { yaw: "90deg", pitch: "20deg" },
 		text: "Prédio alto",
 		direction: "NE", // Anchor será automaticamente "right"
+		size: 6, // Linha de 96px (6 * 16)
 	});
 
 	const skyCallout = createCallout({
@@ -33,6 +35,7 @@ function App() {
 		position: { yaw: "0deg", pitch: "60deg" },
 		text: "Céu azul",
 		direction: "down", // Anchor será automaticamente "top"
+		size: 10, // Linha de 160px (10 * 16)
 	});
 
 	// Lensflares configuration

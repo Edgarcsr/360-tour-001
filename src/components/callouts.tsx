@@ -79,7 +79,7 @@ export const createCallout = ({
 	text,
 	anchor,
 	direction = "right",
-	size = 6,
+	size = 12,
 }: CalloutConfig) => {
 	// Se anchor não foi especificado, usa o mapeamento automático baseado na direction
 	const finalAnchor = anchor || getAnchorForDirection(direction);

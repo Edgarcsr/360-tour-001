@@ -1042,20 +1042,3 @@ export function generateCalloutHTML(
 			return `<div>Invalid direction: "${direction}"</div>`;
 	}
 }
-
-// Função para criar um callout
-export const createCallout = ({
-	id,
-	position,
-	text,
-	anchor = "left",
-	direction = "right",
-	size = 8, // Valor padrão para ter 128px (8 * 16)
-}: CalloutConfig) => ({
-	id,
-	position,
-	html: generateCalloutHTML(text, direction, 18, 2, size),
-	anchor,
-	className: "psv-callout",
-	text,
-});
