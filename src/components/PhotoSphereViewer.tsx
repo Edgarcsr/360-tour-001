@@ -1,8 +1,20 @@
 import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
 import { LensflarePlugin } from "photo-sphere-viewer-lensflare-plugin";
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { ReactPhotoSphereViewer } from "react-photo-sphere-viewer";
+import type { Scene } from "../scenes";
 import { Callout } from "./callouts";
+
+interface TransitionOptions {
+	speed?: number | string;
+	rotation?: boolean;
+	effect?: "fade" | "black" | "white";
+}
+
+export interface PhotoSphereViewerRef {
+	setPanorama: (src: string, transition?: TransitionOptions) => void;
+	setScene: (scene: Scene, transition?: TransitionOptions) => void;
+}
 
 interface PhotoSphereViewerProps {
 	src: string;
@@ -13,18 +25,22 @@ interface PhotoSphereViewerProps {
 	onMarkerClick?: (markerId: string) => void;
 	height?: string;
 	width?: string;
+	defaultTransition?: TransitionOptions;
 }
 
-export function PhotoSphereViewer(props: PhotoSphereViewerProps) {
+export const PhotoSphereViewer = forwardRef<
+	PhotoSphereViewerRef,
+	PhotoSphereViewerProps
+>((props, ref) => {
 	const {
 		src,
 		markers = [],
 		callouts = [],
 		lensflares = [],
-		compass = true,
 		onMarkerClick,
 		height = "100vh",
 		width = "100%",
+		defaultTransition,
 	} = props;
 
 	const [camera, setCamera] = useState<{ yaw: number; pitch: number }>({
@@ -32,7 +48,50 @@ export function PhotoSphereViewer(props: PhotoSphereViewerProps) {
 		pitch: 0,
 	});
 
+	// Estado interno para gerenciar markers, callouts e lensflares da cena atual
+	const [currentMarkers, setCurrentMarkers] = useState(markers);
+	const [currentCallouts, setCurrentCallouts] = useState(callouts);
+	const [currentLensflares, setCurrentLensflares] = useState(lensflares);
+
+	const viewerRef = useRef<any>(null);
+
+	// Expor métodos através do ref
+	useImperativeHandle(ref, () => ({
+		setPanorama: (newSrc: string, transition?: TransitionOptions) => {
+			if (viewerRef.current) {
+				viewerRef.current.setPanorama(newSrc, transition);
+			}
+		},
+		setScene: (scene: Scene, transition?: TransitionOptions) => {
+			if (viewerRef.current) {
+				// Limpa os markers atuais do plugin
+				const markersPlugin = viewerRef.current.getPlugin(MarkersPlugin);
+				if (markersPlugin) {
+					markersPlugin.clearMarkers();
+				}
+
+				// Atualiza o estado interno com os dados da nova cena
+				setCurrentMarkers(scene.markers);
+				setCurrentCallouts(scene.callouts);
+				setCurrentLensflares(scene.lensflares);
+
+				// Muda o panorama
+				viewerRef.current.setPanorama(scene.panorama, transition);
+
+				// Adiciona os novos markers após um pequeno delay
+				setTimeout(() => {
+					if (markersPlugin) {
+						const allMarkers = [...scene.markers, ...scene.callouts];
+						markersPlugin.setMarkers(allMarkers);
+					}
+				}, 100);
+			}
+		},
+	}));
+
 	const handleReady = (instance: any) => {
+		viewerRef.current = instance;
+
 		const markersPlugin = instance.getPlugin(MarkersPlugin);
 		if (markersPlugin && onMarkerClick) {
 			markersPlugin.addEventListener("select-marker", (e: any) => {
@@ -49,9 +108,13 @@ export function PhotoSphereViewer(props: PhotoSphereViewerProps) {
 	};
 
 	const plugins = [];
-	if (lensflares.length > 0) plugins.push([LensflarePlugin, { lensflares }]);
-	if (markers.length > 0 || callouts.length > 0)
-		plugins.push([MarkersPlugin, { markers: [...markers, ...callouts] }]);
+	if (currentLensflares.length > 0)
+		plugins.push([LensflarePlugin, { lensflares: currentLensflares }]);
+	if (currentMarkers.length > 0 || currentCallouts.length > 0)
+		plugins.push([
+			MarkersPlugin,
+			{ markers: [...currentMarkers, ...currentCallouts] },
+		]);
 
 	return (
 		<div style={{ position: "relative", width, height }}>
@@ -62,11 +125,12 @@ export function PhotoSphereViewer(props: PhotoSphereViewerProps) {
 				width={width}
 				onReady={handleReady}
 				onPositionChange={handlePositionChange}
+				defaultTransition={defaultTransition}
 			/>
 			{/* Callouts React para controlar ativação */}
-			{callouts.map((c) => (
+			{currentCallouts.map((c) => (
 				<Callout key={c.id} {...c} camera={camera} />
 			))}
 		</div>
 	);
-}
+});
