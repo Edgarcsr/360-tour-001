@@ -29,18 +29,72 @@ function App() {
 	};
 
 	return (
-		<PhotoSphereViewer
-			ref={viewerRef}
-			src={currentScene.panorama}
-			markers={currentScene.markers}
-			callouts={currentScene.callouts}
-			lensflares={currentScene.lensflares}
-			compass={true}
-			onMarkerClick={handleMarkerClick}
-			height="100vh"
-			width="100%"
-			defaultTransition={{ speed: 1500, rotation: true, effect: "fade" }}
-		/>
+		<div style={{ position: "relative" }}>
+			{/* Botões de teste para demonstrar o loading */}
+			<div style={{ position: "absolute", top: 20, left: 20, zIndex: 100 }}>
+				<button
+					type="button"
+					onClick={() => {
+						if (viewerRef.current) {
+							viewerRef.current.setScene(beachScene, {
+								speed: 2000,
+								rotation: true,
+								effect: "fade",
+							});
+							setCurrentScene(beachScene);
+						}
+					}}
+					style={{
+						padding: "10px 20px",
+						margin: "5px",
+						backgroundColor: "#60a5fa",
+						color: "white",
+						border: "none",
+						borderRadius: "5px",
+						cursor: "pointer",
+					}}
+				>
+					Praia
+				</button>
+				<button
+					type="button"
+					onClick={() => {
+						if (viewerRef.current) {
+							viewerRef.current.setScene(buildingScene, {
+								speed: 2000,
+								rotation: true,
+								effect: "fade",
+							});
+							setCurrentScene(buildingScene);
+						}
+					}}
+					style={{
+						padding: "10px 20px",
+						margin: "5px",
+						backgroundColor: "#34d399",
+						color: "white",
+						border: "none",
+						borderRadius: "5px",
+						cursor: "pointer",
+					}}
+				>
+					Prédio
+				</button>
+			</div>
+
+			<PhotoSphereViewer
+				ref={viewerRef}
+				src={currentScene.panorama}
+				markers={currentScene.markers}
+				callouts={currentScene.callouts}
+				lensflares={currentScene.lensflares}
+				compass={true}
+				onMarkerClick={handleMarkerClick}
+				height="100vh"
+				width="100%"
+				defaultTransition={{ speed: 1500, rotation: true, effect: "fade" }}
+			/>
+		</div>
 	);
 }
 
