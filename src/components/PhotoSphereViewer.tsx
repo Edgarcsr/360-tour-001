@@ -1,7 +1,10 @@
 import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
 import { LensflarePlugin } from "photo-sphere-viewer-lensflare-plugin";
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
-import { ReactPhotoSphereViewer } from "react-photo-sphere-viewer";
+import {
+	type PluginConfig,
+	ReactPhotoSphereViewer,
+} from "react-photo-sphere-viewer";
 import type { Scene } from "../scenes";
 import { Callout } from "./callouts";
 import { LoadingSpinner } from "./LoadingSpinner";
@@ -124,14 +127,20 @@ export const PhotoSphereViewer = forwardRef<
 		setCamera({ yaw: yawDeg, pitch: pitchDeg });
 	};
 
-	const plugins = [];
-	if (currentLensflares.length > 0)
-		plugins.push([LensflarePlugin, { lensflares: currentLensflares }]);
-	if (currentMarkers.length > 0 || currentCallouts.length > 0)
+	// PhotoSphereViewer expects an array of PluginEntry (PluginConstructor or [PluginConstructor, config])
+	const plugins: PluginConfig[] = [];
+	if (currentLensflares.length > 0) {
+		plugins.push([
+			LensflarePlugin,
+			{ lensflares: currentLensflares },
+		] as PluginConfig);
+	}
+	if (currentMarkers.length > 0 || currentCallouts.length > 0) {
 		plugins.push([
 			MarkersPlugin,
 			{ markers: [...currentMarkers, ...currentCallouts] },
-		]);
+		] as PluginConfig);
+	}
 
 	return (
 		<div style={{ position: "relative", width, height }}>
