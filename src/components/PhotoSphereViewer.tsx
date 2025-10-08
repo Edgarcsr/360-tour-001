@@ -136,6 +136,8 @@ export const PhotoSphereViewer = forwardRef<
 	return (
 		<div style={{ position: "relative", width, height }}>
 			<ReactPhotoSphereViewer
+				// hide the default bottom navbar/menu
+				navbar={false}
 				plugins={plugins}
 				src={src}
 				height={height}
