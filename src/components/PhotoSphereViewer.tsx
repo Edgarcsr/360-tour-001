@@ -68,7 +68,7 @@ export const PhotoSphereViewer = forwardRef<
 		setScene: (scene: Scene, transition?: TransitionOptions) => {
 			if (viewerRef.current) {
 				setIsLoading(true); // Mostra loading ao trocar cena
-				
+
 				// Limpa os markers atuais do plugin
 				const markersPlugin = viewerRef.current.getPlugin(MarkersPlugin);
 				if (markersPlugin) {
@@ -96,16 +96,16 @@ export const PhotoSphereViewer = forwardRef<
 
 	const handleReady = (instance: any) => {
 		viewerRef.current = instance;
-		
+
 		// Adiciona listeners para eventos de carregamento
-		instance.addEventListener('panorama-load-progress', () => {
+		instance.addEventListener("panorama-load-progress", () => {
 			setIsLoading(true);
 		});
-		
-		instance.addEventListener('panorama-loaded', () => {
+
+		instance.addEventListener("panorama-loaded", () => {
 			setIsLoading(false);
 		});
-		
+
 		// Oculta o loading inicial
 		setIsLoading(false);
 
@@ -143,17 +143,12 @@ export const PhotoSphereViewer = forwardRef<
 				onReady={handleReady}
 				onPositionChange={handlePositionChange}
 				defaultTransition={defaultTransition}
-				loadingTxt=""  // Remove o texto padrão
-				loadingImg=""  // Remove a imagem padrão
+				loadingTxt="" // Remove o texto padrão
+				loadingImg="" // Remove a imagem padrão
 				canvasBackground="#000000"
 			/>
 			{/* Loading overlay customizado */}
-			{isLoading && (
-				<LoadingSpinner 
-					size="lg" 
-					text="Carregando panorama..." 
-				/>
-			)}
+			{isLoading && <LoadingSpinner size="lg" text="Carregando panorama..." />}
 			{/* Callouts React para controlar ativação */}
 			{currentCallouts.map((c) => (
 				<Callout key={c.id} {...c} camera={camera} />
