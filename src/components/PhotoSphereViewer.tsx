@@ -4,6 +4,7 @@ import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { ReactPhotoSphereViewer } from "react-photo-sphere-viewer";
 import type { Scene } from "../scenes";
 import { Callout } from "./callouts";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 interface TransitionOptions {
 	speed?: number | string;
@@ -47,6 +48,7 @@ export const PhotoSphereViewer = forwardRef<
 		yaw: 0,
 		pitch: 0,
 	});
+	const [isLoading, setIsLoading] = useState(true);
 
 	// Estado interno para gerenciar markers, callouts e lensflares da cena atual
 	const [currentMarkers, setCurrentMarkers] = useState(markers);
@@ -59,11 +61,14 @@ export const PhotoSphereViewer = forwardRef<
 	useImperativeHandle(ref, () => ({
 		setPanorama: (newSrc: string, transition?: TransitionOptions) => {
 			if (viewerRef.current) {
+				setIsLoading(true); // Mostra loading ao trocar panorama
 				viewerRef.current.setPanorama(newSrc, transition);
 			}
 		},
 		setScene: (scene: Scene, transition?: TransitionOptions) => {
 			if (viewerRef.current) {
+				setIsLoading(true); // Mostra loading ao trocar cena
+				
 				// Limpa os markers atuais do plugin
 				const markersPlugin = viewerRef.current.getPlugin(MarkersPlugin);
 				if (markersPlugin) {
@@ -91,6 +96,18 @@ export const PhotoSphereViewer = forwardRef<
 
 	const handleReady = (instance: any) => {
 		viewerRef.current = instance;
+		
+		// Adiciona listeners para eventos de carregamento
+		instance.addEventListener('panorama-load-progress', () => {
+			setIsLoading(true);
+		});
+		
+		instance.addEventListener('panorama-loaded', () => {
+			setIsLoading(false);
+		});
+		
+		// Oculta o loading inicial
+		setIsLoading(false);
 
 		const markersPlugin = instance.getPlugin(MarkersPlugin);
 		if (markersPlugin && onMarkerClick) {
@@ -126,7 +143,17 @@ export const PhotoSphereViewer = forwardRef<
 				onReady={handleReady}
 				onPositionChange={handlePositionChange}
 				defaultTransition={defaultTransition}
+				loadingTxt=""  // Remove o texto padrão
+				loadingImg=""  // Remove a imagem padrão
+				canvasBackground="#000000"
 			/>
+			{/* Loading overlay customizado */}
+			{isLoading && (
+				<LoadingSpinner 
+					size="lg" 
+					text="Carregando panorama..." 
+				/>
+			)}
 			{/* Callouts React para controlar ativação */}
 			{currentCallouts.map((c) => (
 				<Callout key={c.id} {...c} camera={camera} />

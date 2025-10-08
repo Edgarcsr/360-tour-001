@@ -11,6 +11,16 @@ div .psv-tooltip,
   overflow: hidden;
 }
 
+/* Oculta o loading original do PhotoSphere */
+.psv-loader-container,
+.psv-loader,
+.psv-loader-image,
+.psv-loader-text {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
 body {
   margin: 0;
 }
