@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: <Not needed> */
 import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
 import { LensflarePlugin } from "photo-sphere-viewer-lensflare-plugin";
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
