@@ -1,7 +1,7 @@
 import { beachScene } from "./beach.scene";
-import { buildingScene } from "./building.scene";
-import { panoramicScene } from "./panoramic.scene";
+import { houseScene } from "./house.scene";
+import { lighthouseScene } from "./lighthouse.scene";
 
 export type { Callout, Lensflare, Marker, Position, Scene } from "./types";
 
-export const scenes = [beachScene, buildingScene, panoramicScene];
+export const scenes = [beachScene, houseScene, lighthouseScene];
