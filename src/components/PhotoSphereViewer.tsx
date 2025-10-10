@@ -1,6 +1,5 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <Not needed> */
 import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
-import { ContextMenuContent } from "@radix-ui/react-context-menu";
 import { LensflarePlugin } from "photo-sphere-viewer-lensflare-plugin";
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import {
@@ -10,11 +9,6 @@ import {
 import type { Scene } from "../scenes";
 import { Callout } from "./callouts";
 import { LoadingSpinner } from "./LoadingSpinner";
-import {
-	ContextMenu,
-	ContextMenuItem,
-	ContextMenuTrigger,
-} from "./ui/context-menu";
 
 interface TransitionOptions {
 	speed?: number | string;
@@ -150,36 +144,27 @@ export const PhotoSphereViewer = forwardRef<
 	}
 
 	return (
-		<ContextMenu>
-			<div style={{ position: "relative", width, height }}>
-				<ContextMenuTrigger>
-					<ReactPhotoSphereViewer
-						// hide the default bottom navbar/menu
-						navbar={false}
-						plugins={plugins}
-						src={src}
-						height={height}
-						width={width}
-						onReady={handleReady}
-						onPositionChange={handlePositionChange}
-						defaultTransition={defaultTransition}
-						loadingTxt="" // Remove o texto padrão
-						loadingImg="" // Remove a imagem padrão
-						canvasBackground="#000000"
-					/>
-					{/* Loading overlay customizado */}
-					{isLoading && (
-						<LoadingSpinner size="lg" text="Carregando panorama..." />
-					)}
-					{/* Callouts React para controlar ativação */}
-					{currentCallouts.map((c) => (
-						<Callout key={c.id} {...c} camera={camera} />
-					))}
-				</ContextMenuTrigger>
-				<ContextMenuContent>
-					<ContextMenuItem>K2 Imagens aéreas</ContextMenuItem>
-				</ContextMenuContent>
-			</div>
-		</ContextMenu>
+		<div style={{ position: "relative", width, height }}>
+			<ReactPhotoSphereViewer
+				// hide the default bottom navbar/menu
+				navbar={false}
+				plugins={plugins}
+				src={src}
+				height={height}
+				width={width}
+				onReady={handleReady}
+				onPositionChange={handlePositionChange}
+				defaultTransition={defaultTransition}
+				loadingTxt="" // Remove o texto padrão
+				loadingImg="" // Remove a imagem padrão
+				canvasBackground="#000000"
+			/>
+			{/* Loading overlay customizado */}
+			{isLoading && <LoadingSpinner size="lg" text="Carregando panorama..." />}
+			{/* Callouts React para controlar ativação */}
+			{currentCallouts.map((c) => (
+				<Callout key={c.id} {...c} camera={camera} />
+			))}
+		</div>
 	);
 });

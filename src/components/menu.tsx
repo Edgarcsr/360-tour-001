@@ -10,6 +10,7 @@ import {
 	DrawerTrigger,
 } from "@/components/ui/drawer";
 import { type Scene, scenes } from "@/scenes";
+import { ModeToggle } from "./mode-toggle";
 import type { PhotoSphereViewerRef } from "./PhotoSphereViewer";
 import { Button } from "./ui/button";
 
@@ -44,7 +45,7 @@ export function Menu({
 		<div className="absolute top-4 left-4 z-10 h-full">
 			<Drawer direction="left">
 				<DrawerTrigger asChild>
-					<Button size={"icon"}>
+					<Button variant={"secondary"} size={"icon"}>
 						<MenuIcon />
 					</Button>
 				</DrawerTrigger>
@@ -52,7 +53,7 @@ export function Menu({
 					<DrawerHeader>
 						<DrawerTitle className="flex items-center gap-2">
 							<MapIcon />
-							<h2>Onde ir?</h2>
+							Onde ir?
 						</DrawerTitle>
 						<DrawerDescription>
 							Clique na área que deseja explorar.
@@ -74,9 +75,12 @@ export function Menu({
 						})}
 					</DrawerHeader>
 					<DrawerFooter>
-						<DrawerClose asChild>
-							<Button>Fechar</Button>
-						</DrawerClose>
+						<div className="flex items-center gap-2 flex-1">
+							<DrawerClose asChild>
+								<Button className="flex-1">Fechar</Button>
+							</DrawerClose>
+							<ModeToggle />
+						</div>
 					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>
