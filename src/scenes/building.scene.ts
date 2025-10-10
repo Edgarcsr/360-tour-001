@@ -4,7 +4,7 @@ import type { Scene } from "./types";
 
 export const buildingScene: Scene = {
 	id: "building",
-	name: "Top Building View",
+	name: "Prédio",
 	panorama: "top-building.jpg",
 	icon: BuildingIcon,
 	markers: [],
