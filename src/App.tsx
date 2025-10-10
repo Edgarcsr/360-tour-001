@@ -1,27 +1,29 @@
 import "@photo-sphere-viewer/compass-plugin/index.css";
 import "@photo-sphere-viewer/markers-plugin/index.css";
 import { useRef, useState } from "react";
+import { Menu } from "./components/menu";
 import {
 	PhotoSphereViewer,
 	type PhotoSphereViewerRef,
 } from "./components/PhotoSphereViewer";
-import { beachScene, buildingScene } from "./scenes";
+import { scenes } from "./scenes";
 
 function App() {
 	const viewerRef = useRef<PhotoSphereViewerRef>(null);
-	const [currentScene, setCurrentScene] = useState(beachScene);
+	const [currentScene, setCurrentScene] = useState(scenes[0]);
 
 	// Handler para cliques nos markers
 	const handleMarkerClick = (markerId: string) => {
-		if (markerId === "house") {
-			// Troca para a cena do prédio com transição
-			if (viewerRef.current) {
-				viewerRef.current.setScene(buildingScene, {
+		// Buscar a cena alvo por id (por convenção, o marker pode ter o mesmo id da cena alvo)
+		const targetScene = scenes.find((s) => s.id === markerId);
+		if (targetScene) {
+			if (viewerRef.current && currentScene.id !== targetScene.id) {
+				viewerRef.current.setScene(targetScene, {
 					speed: 2000,
 					rotation: true,
 					effect: "fade",
 				});
-				setCurrentScene(buildingScene);
+				setCurrentScene(targetScene);
 			}
 		} else {
 			console.log(`Marker clicked: ${markerId}`);
@@ -30,58 +32,12 @@ function App() {
 
 	return (
 		<div style={{ position: "relative" }}>
-			{/* Botões de teste para demonstrar o loading */}
-			<div style={{ position: "absolute", top: 20, left: 20, zIndex: 100 }}>
-				<button
-					type="button"
-					onClick={() => {
-						if (viewerRef.current) {
-							viewerRef.current.setScene(beachScene, {
-								speed: 2000,
-								rotation: true,
-								effect: "fade",
-							});
-							setCurrentScene(beachScene);
-						}
-					}}
-					style={{
-						padding: "10px 20px",
-						margin: "5px",
-						backgroundColor: "#60a5fa",
-						color: "white",
-						border: "none",
-						borderRadius: "5px",
-						cursor: "pointer",
-					}}
-				>
-					Praia
-				</button>
-				<button
-					type="button"
-					onClick={() => {
-						if (viewerRef.current) {
-							viewerRef.current.setScene(buildingScene, {
-								speed: 2000,
-								rotation: true,
-								effect: "fade",
-							});
-							setCurrentScene(buildingScene);
-						}
-					}}
-					style={{
-						padding: "10px 20px",
-						margin: "5px",
-						backgroundColor: "#34d399",
-						color: "white",
-						border: "none",
-						borderRadius: "5px",
-						cursor: "pointer",
-					}}
-				>
-					Prédio
-				</button>
-			</div>
-
+			<Menu
+				viewerRef={viewerRef}
+				currentScene={currentScene}
+				onSceneChange={setCurrentScene}
+				scenes={scenes}
+			/>
 			<PhotoSphereViewer
 				ref={viewerRef}
 				src={currentScene.panorama}

@@ -1,3 +1,5 @@
+import type { ComponentType, ReactNode } from "react";
+
 export interface Position {
 	yaw: string;
 	pitch: string;
@@ -30,6 +32,7 @@ export interface Scene {
 	id: string;
 	name: string;
 	panorama: string;
+	icon: ReactNode | ComponentType;
 	markers: Marker[];
 	callouts: Callout[];
 	lensflares: Lensflare[];

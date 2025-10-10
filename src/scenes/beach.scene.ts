@@ -1,11 +1,13 @@
+import { VolleyballIcon } from "lucide-react";
 import { createCallout } from "../components/callouts";
 import { createAnimatedCircleMarker } from "../components/markers";
 import type { Scene } from "./types";
 
 export const beachScene: Scene = {
 	id: "beach",
-	name: "Key Biscayne Beach",
+	name: "Praia",
 	panorama: "key-biscayne-4.jpg",
+	icon: VolleyballIcon,
 	markers: [
 		createAnimatedCircleMarker({
 			id: "house",

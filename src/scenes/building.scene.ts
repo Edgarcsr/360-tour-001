@@ -1,3 +1,4 @@
+import { BuildingIcon } from "lucide-react";
 import { createCallout } from "../components/callouts";
 import type { Scene } from "./types";
 
@@ -5,6 +6,7 @@ export const buildingScene: Scene = {
 	id: "building",
 	name: "Top Building View",
 	panorama: "top-building.jpg",
+	icon: BuildingIcon,
 	markers: [],
 	callouts: [
 		createCallout({
