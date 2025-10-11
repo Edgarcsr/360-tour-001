@@ -11,25 +11,31 @@ export const houseScene: Scene = {
 	callouts: [
 		createCallout({
 			id: "house-callout-1",
-			position: { yaw: "45deg", pitch: "10deg" },
-			text: "Vista do topo",
+			position: { yaw: "234.1deg", pitch: "34deg" },
+			text: "Farol do Cabo Flórida",
 			direction: "left",
 			size: 4,
 		}),
 		createCallout({
 			id: "house-callout-2",
-			position: { yaw: "-90deg", pitch: "5deg" },
-			text: "Horizonte da cidade",
-			direction: "right",
+			position: { yaw: "16.4deg", pitch: "12.6deg" },
+			text: "Coqueiro",
+			direction: "SW",
 			size: 8,
 		}),
 		createCallout({
 			id: "house-callout-3",
-			position: { yaw: "180deg", pitch: "-20deg" },
-			text: "Vista panorâmica",
+			position: { yaw: "158.7deg", pitch: "19.1deg" },
+			text: "Chaminé",
 			direction: "up",
 			size: 6,
 		}),
 	],
-	lensflares: [],
+	lensflares: [
+		{
+			id: "sun",
+			position: { yaw: "333.4deg", pitch: "36deg" },
+			type: 2,
+		},
+	],
 };

@@ -36,10 +36,10 @@ interface PhotoSphereViewerProps {
 	emitCamera?: boolean;
 }
 
-export const PhotoSphereViewer = forwardRef<
-	PhotoSphereViewerRef,
-	PhotoSphereViewerProps
->((props, ref) => {
+export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
+	props: PhotoSphereViewerProps,
+	ref: any,
+) {
 	const {
 		src,
 		markers = [],
@@ -85,9 +85,9 @@ export const PhotoSphereViewer = forwardRef<
 				}
 
 				// Atualiza o estado interno com os dados da nova cena
-				setCurrentMarkers(scene.markers);
-				setCurrentCallouts(scene.callouts);
-				setCurrentLensflares(scene.lensflares);
+				setCurrentMarkers(scene.markers || []);
+				setCurrentCallouts(scene.callouts || []);
+				setCurrentLensflares(scene.lensflares || []);
 
 				// Muda o panorama
 				viewerRef.current.setPanorama(scene.panorama, transition);
@@ -95,8 +95,30 @@ export const PhotoSphereViewer = forwardRef<
 				// Adiciona os novos markers após um pequeno delay
 				setTimeout(() => {
 					if (markersPlugin) {
-						const allMarkers = [...scene.markers, ...scene.callouts];
+						const allMarkers = [
+							...(scene.markers || []),
+							...(scene.callouts || []),
+						];
 						markersPlugin.setMarkers(allMarkers);
+					}
+
+					// Atualiza lensflares se o plugin estiver disponível
+					try {
+						const lensflarePlugin =
+							viewerRef.current.getPlugin(LensflarePlugin);
+						if (lensflarePlugin) {
+							if (typeof lensflarePlugin.setLensflares === "function") {
+								lensflarePlugin.setLensflares(scene.lensflares || []);
+							} else if (typeof lensflarePlugin.set === "function") {
+								try {
+									lensflarePlugin.set({ lensflares: scene.lensflares || [] });
+								} catch (e) {
+									// ignore if incompatible
+								}
+							}
+						}
+					} catch (_) {
+						// ignore plugin errors
 					}
 				}, 100);
 			}
@@ -177,3 +199,5 @@ export const PhotoSphereViewer = forwardRef<
 		</div>
 	);
 });
+
+export default PhotoSphereViewer;
