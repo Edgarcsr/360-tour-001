@@ -31,9 +31,9 @@ interface PhotoSphereViewerProps {
 	height?: string;
 	width?: string;
 	defaultTransition?: TransitionOptions;
-		onCameraChange?: (camera: { yaw: number; pitch: number }) => void;
-		// when true, the component will emit camera updates via onCameraChange
-		emitCamera?: boolean;
+	onCameraChange?: (camera: { yaw: number; pitch: number }) => void;
+	// when true, the component will emit camera updates via onCameraChange
+	emitCamera?: boolean;
 }
 
 export const PhotoSphereViewer = forwardRef<
@@ -51,11 +51,12 @@ export const PhotoSphereViewer = forwardRef<
 		defaultTransition,
 	} = props;
 
-		const [camera, setCamera] = useState<{ yaw: number; pitch: number }>({
-			yaw: 0,
-			pitch: 0,
-		});
-		const { onCameraChange, emitCamera = false } = props as PhotoSphereViewerProps;
+	const [camera, setCamera] = useState<{ yaw: number; pitch: number }>({
+		yaw: 0,
+		pitch: 0,
+	});
+	const { onCameraChange, emitCamera = false } =
+		props as PhotoSphereViewerProps;
 	const [isLoading, setIsLoading] = useState(true);
 
 	// Estado interno para gerenciar markers, callouts e lensflares da cena atual
@@ -129,8 +130,8 @@ export const PhotoSphereViewer = forwardRef<
 		// converte radianos para graus
 		const yawDeg = (lng * 180) / Math.PI;
 		const pitchDeg = (lat * 180) / Math.PI;
-			const newCam = { yaw: yawDeg, pitch: pitchDeg };
-			setCamera(newCam);
+		const newCam = { yaw: yawDeg, pitch: pitchDeg };
+		setCamera(newCam);
 		if (emitCamera && onCameraChange) onCameraChange(newCam);
 	};
 
