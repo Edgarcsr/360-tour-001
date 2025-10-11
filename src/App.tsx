@@ -3,6 +3,7 @@ import "@photo-sphere-viewer/markers-plugin/index.css";
 import { useRef, useState } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Menu } from "./components/menu";
+import Crosshair from "./components/Crosshair";
 import {
 	PhotoSphereViewer,
 	type PhotoSphereViewerRef,
@@ -18,6 +19,12 @@ import { scenes } from "./scenes";
 function App() {
 	const viewerRef = useRef<PhotoSphereViewerRef>(null);
 	const [currentScene, setCurrentScene] = useState(scenes[0]);
+	// enable crosshair only when the Vite client env variable VITE_ENVIRONMENT === 'development'
+	const enableCrosshairFeature = import.meta.env.VITE_ENVIRONMENT === "development" && import.meta.env.DEV;
+	const [crosshairEnabled, setCrosshairEnabled] = useState(false);
+	const [camera, setCamera] = useState<{ yaw: number; pitch: number } | null>(
+		{ yaw: 0, pitch: 0 }
+	);
 
 	// Handler para cliques nos markers
 	const handleMarkerClick = (markerId: string) => {
@@ -48,6 +55,9 @@ function App() {
 								currentScene={currentScene}
 								onSceneChange={setCurrentScene}
 								scenes={scenes}
+								crosshairEnabled={crosshairEnabled}
+								setCrosshairEnabled={setCrosshairEnabled}
+								enableCrosshairFeature={enableCrosshairFeature}
 							/>
 							<PhotoSphereViewer
 								ref={viewerRef}
@@ -64,7 +74,12 @@ function App() {
 									rotation: true,
 									effect: "fade",
 								}}
+								onCameraChange={(cam) => setCamera(cam)}
+								emitCamera={enableCrosshairFeature}
 							/>
+							{enableCrosshairFeature && (
+								<Crosshair enabled={crosshairEnabled} camera={camera} />
+							)}
 						</div>
 					</ContextMenuTrigger>
 					<ContextMenuContent>

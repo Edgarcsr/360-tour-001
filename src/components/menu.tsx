@@ -13,12 +13,16 @@ import { type Scene, scenes } from "@/scenes";
 import { ModeToggle } from "./mode-toggle";
 import type { PhotoSphereViewerRef } from "./PhotoSphereViewer";
 import { Button } from "./ui/button";
+import { Switch } from "./ui/switch";
 
 interface MenuProps {
 	viewerRef: React.RefObject<PhotoSphereViewerRef | null>;
 	currentScene: Scene;
 	onSceneChange: (scene: Scene) => void;
 	scenes: Scene[];
+	crosshairEnabled?: boolean;
+	setCrosshairEnabled?: (v: boolean) => void;
+	enableCrosshairFeature?: boolean;
 }
 
 export function Menu({
@@ -26,6 +30,9 @@ export function Menu({
 	currentScene,
 	onSceneChange,
 	scenes: propScenes,
+	crosshairEnabled = false,
+	setCrosshairEnabled,
+	enableCrosshairFeature = false,
 }: MenuProps) {
 	const handleSceneChange = (targetScene: Scene) => {
 		if (viewerRef.current && currentScene.id !== targetScene.id) {
@@ -74,6 +81,17 @@ export function Menu({
 							);
 						})}
 					</DrawerHeader>
+
+					{enableCrosshairFeature && (
+						<div className="flex justify-between py-2 px-4 rounded-sm hover:bg-muted transition">
+							<p>Crosshair</p>
+							<Switch
+								checked={crosshairEnabled}
+								onCheckedChange={(v) => setCrosshairEnabled?.(Boolean(v))}
+							/>
+						</div>
+					)}
+
 					<DrawerFooter>
 						<div className="flex items-center gap-2 flex-1">
 							<DrawerClose asChild>
