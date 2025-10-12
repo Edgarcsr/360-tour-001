@@ -11,6 +11,9 @@ importers:
       '@photo-sphere-viewer/compass-plugin':
         specifier: ^5.13.4
         version: 5.13.4(@photo-sphere-viewer/core@5.13.4)
+      '@photo-sphere-viewer/equirectangular-tiles-adapter':
+        specifier: ~5.13.4
+        version: 5.13.4(@photo-sphere-viewer/core@5.13.4)
       '@photo-sphere-viewer/markers-plugin':
         specifier: ^5.13.4
         version: 5.13.4(@photo-sphere-viewer/core@5.13.4)
@@ -516,6 +519,11 @@ packages:
 
   '@photo-sphere-viewer/core@5.13.4':
     resolution: {integrity: sha512-leVQL6gG9wTF+uvCFarHUcr8mzafCZ/GLzauksYQJfiqDVRFSAJNXnTOy7RH9otToluEdjN1hsN1f9HQy+rLYg==}
+
+  '@photo-sphere-viewer/equirectangular-tiles-adapter@5.13.4':
+    resolution: {integrity: sha512-q4l1o9ou62HJgpym2lD9dL1OeA1cLL6jvvFhBEON3q3X8cSuvUD9ygUEqUADgCxEMsvFqX/2ox3kcfwF59mqaA==}
+    peerDependencies:
+      '@photo-sphere-viewer/core': 5.13.4
 
   '@photo-sphere-viewer/markers-plugin@5.13.4':
     resolution: {integrity: sha512-BsrKT2CYQ/IPF8jTmufo4G8ILxUStTjym/7apoKH+7GAR4MPefEDWI2dnwkX8cfU0dqBsWz9hjHZab2sjwNtsQ==}
@@ -2248,6 +2256,10 @@ snapshots:
   '@photo-sphere-viewer/core@5.13.4':
     dependencies:
       three: 0.175.0
+
+  '@photo-sphere-viewer/equirectangular-tiles-adapter@5.13.4(@photo-sphere-viewer/core@5.13.4)':
+    dependencies:
+      '@photo-sphere-viewer/core': 5.13.4
 
   '@photo-sphere-viewer/markers-plugin@5.13.4(@photo-sphere-viewer/core@5.13.4)':
     dependencies:

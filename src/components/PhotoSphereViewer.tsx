@@ -1,4 +1,6 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <Not needed> */
+
+import { EquirectangularTilesAdapter } from "@photo-sphere-viewer/equirectangular-tiles-adapter";
 import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
 import { LensflarePlugin } from "photo-sphere-viewer-lensflare-plugin";
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
@@ -22,7 +24,8 @@ export interface PhotoSphereViewerRef {
 }
 
 interface PhotoSphereViewerProps {
-	src: string;
+	// src may be a string (single image) or a tiled panorama object
+	src: string | import("../scenes/types").TiledPanorama;
 	markers?: any[];
 	callouts?: any[];
 	lensflares?: any[];
@@ -175,10 +178,17 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 	return (
 		<div style={{ position: "relative", width, height }}>
 			<ReactPhotoSphereViewer
-				// hide the default bottom navbar/menu
+				// If src is a tiled panorama object, use the tiles adapter and pass the panorama config directly.
+				adapter={
+					(typeof src === "object"
+						? (EquirectangularTilesAdapter as any)
+						: undefined) as any
+				}
+				panorama={(typeof src === "object" ? (src as any) : undefined) as any}
 				navbar={false}
 				plugins={plugins}
-				src={src}
+				// when not using tiled panorama, pass src as string
+				src={(typeof src === "string" ? (src as any) : undefined) as any}
 				height={height}
 				width={width}
 				onReady={handleReady}
