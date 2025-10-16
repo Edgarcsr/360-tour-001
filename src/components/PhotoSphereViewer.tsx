@@ -196,7 +196,6 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 				defaultTransition={defaultTransition}
 				loadingTxt="" // Remove o texto padrão
 				loadingImg="" // Remove a imagem padrão
-				canvasBackground="#000000"
 			/>
 			{/* Loading overlay customizado */}
 			{isLoading && <LoadingSpinner size="lg" text="Carregando panorama..." />}
