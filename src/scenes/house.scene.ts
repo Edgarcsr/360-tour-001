@@ -1,13 +1,20 @@
 import { HouseIcon } from "lucide-react";
 import { createCallout } from "../components/callouts";
 import type { Scene } from "./types";
+import { createAnimatedCircleMarker } from "@/components/markers";
 
 export const houseScene: Scene = {
 	id: "house",
 	name: "Casa da praia",
 	panorama: "key-biscayne-5.jpg",
 	icon: HouseIcon,
-	markers: [],
+	markers: [
+		createAnimatedCircleMarker({
+			id: "beach",
+			position: { yaw: "300.5deg", pitch: "-10deg" },
+			tooltip: "Ir para praia",
+		}),
+	],
 	callouts: [
 		createCallout({
 			id: "house-callout-1",
