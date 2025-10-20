@@ -31,7 +31,7 @@ export function Crosshair({ enabled, camera }: CrosshairProps) {
 				<Button
 					variant="ghost"
 					size="icon"
-					className="p-0.5"
+					className="p-0.5 hover:bg-black/20 "
 					onClick={async () => {
 						// Format yaw/pitch as strings like "300.5deg"
 						const y = (camera ? camera.yaw : 0).toFixed(1) + "deg";
