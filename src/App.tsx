@@ -79,6 +79,10 @@ function App() {
 								}}
 								onCameraChange={(cam) => setCamera(cam)}
 								emitCamera={enableCrosshairFeature}
+								// Escolha o tipo de loading: "spinner" ou "bar"
+								// "spinner" = Loading com overlay escuro e círculo (padrão)
+								// "bar" = Barra discreta no canto inferior (novo)
+								loadingType="bar" // Troque para "bar" para testar a nova opção
 							/>
 							{enableCrosshairFeature && (
 								<Crosshair enabled={crosshairEnabled} camera={camera} />

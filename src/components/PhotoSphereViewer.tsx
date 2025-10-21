@@ -10,6 +10,7 @@ import {
 } from "react-photo-sphere-viewer";
 import type { Scene } from "../scenes";
 import { Callout } from "./callouts";
+import { LoadingBar } from "./LoadingBar";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { setupMarkerEvents } from "./markers";
 
@@ -39,6 +40,8 @@ interface PhotoSphereViewerProps {
 	onCameraChange?: (camera: { yaw: number; pitch: number }) => void;
 	// when true, the component will emit camera updates via onCameraChange
 	emitCamera?: boolean;
+	// loading type: "spinner" (default with overlay) or "bar" (discrete bottom bar)
+	loadingType?: "spinner" | "bar";
 }
 
 export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
@@ -55,6 +58,7 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 		height = "100vh",
 		width = "100%",
 		defaultTransition,
+		loadingType = "spinner",
 	} = props;
 
 	const [camera, setCamera] = useState<{ yaw: number; pitch: number }>({
@@ -208,7 +212,12 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 				loadingImg="" // Remove a imagem padrão
 			/>
 			{/* Loading overlay customizado */}
-			{isLoading && <LoadingSpinner size="lg" text="Carregando panorama..." />}
+			{isLoading && loadingType === "spinner" && (
+				<LoadingSpinner size="lg" text="Carregando panorama..." />
+			)}
+			{isLoading && loadingType === "bar" && (
+				<LoadingBar color="white" height={4} />
+			)}
 			{/* Callouts React para controlar ativação */}
 			{currentCallouts.map((c) => (
 				<Callout key={c.id} {...c} camera={camera} />
