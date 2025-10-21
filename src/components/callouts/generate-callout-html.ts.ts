@@ -29,6 +29,11 @@ export function generateCalloutHTML(
 				100% { transform: scale(2.2); opacity: 0; }
 			}
 			
+			@keyframes callout-fade-in {
+				0% { opacity: 0; }
+				100% { opacity: 1; }
+			}
+			
 			@keyframes line-grow {
 				0% { width: 0; opacity: 0; }
 				100% { width: ${lineWidth}px; opacity: 1; }
@@ -127,10 +132,20 @@ export function generateCalloutHTML(
 			.psv-callout.psv-callout--exiting .psv-callout__text {
 				animation: flag-slide-out 0.2s cubic-bezier(.4,1.4,.6,1) both;
 			}
+
+			/* ========== FADE-IN INICIAL AO TROCAR DE CENA ========== */
+			.psv-callout--fade-in {
+				animation: callout-fade-in 0.5s ease-in-out forwards;
+			}
+
+			@keyframes callout-fade-in {
+				0% { opacity: 0; }
+				100% { opacity: 1; }
+			}
 		</style>
 
 		<!-- ========== ESTRUTURA HTML DO CALLOUT ========== -->
-		<div style="position: relative; display: flex; align-items: center; min-width: 120px; min-height: 60px;">
+		<div style="position: relative; display: flex; align-items: center; min-width: 120px; min-height: 60px; opacity: 0;">
 			
 			<!-- Círculo principal com animação pulsante -->
 			<div style="position: absolute; left: ${-main / 2}px; top: 50%; transform: translateY(-50%); width: ${main}px; height: ${main}px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index:2;">
@@ -265,10 +280,20 @@ export function generateCalloutHTML(
 			.psv-callout.psv-callout--exiting .psv-callout__text-left {
 				animation: flag-slide-out-left 0.2s cubic-bezier(.4,1.4,.6,1) both;
 			}
+
+			/* ========== FADE-IN INICIAL AO TROCAR DE CENA ========== */
+			.psv-callout--fade-in {
+				animation: callout-fade-in 0.5s ease-in-out forwards;
+			}
+
+			@keyframes callout-fade-in {
+				0% { opacity: 0; }
+				100% { opacity: 1; }
+			}
 		</style>
 
 		<!-- ========== ESTRUTURA HTML DO CALLOUT (LEFT) ========== -->
-		<div style="position: relative; display: flex; align-items: center; min-width: 120px; min-height: 60px;">
+		<div style="position: relative; display: flex; align-items: center; min-width: 120px; min-height: 60px; opacity: 0;">
 			
 			<!-- Círculo principal com animação pulsante -->
 			<div style="position: absolute; right: ${-main / 2}px; top: 50%; transform: translateY(-50%); width: ${main}px; height: ${main}px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index:2;">
@@ -370,10 +395,20 @@ export function generateCalloutHTML(
 			.psv-callout.psv-callout--exiting .psv-callout__text-up {
 				animation: flag-slide-out-up 0.2s cubic-bezier(.4,1.4,.6,1) both;
 			}
+
+			/* ========== FADE-IN INICIAL AO TROCAR DE CENA ========== */
+			.psv-callout--fade-in {
+				animation: callout-fade-in 0.5s ease-in-out forwards;
+			}
+
+			@keyframes callout-fade-in {
+				0% { opacity: 0; }
+				100% { opacity: 1; }
+			}
 		</style>
 
 		<!-- ========== ESTRUTURA HTML DO CALLOUT (UP) ========== -->
-		<div style="position: relative; display: flex; flex-direction: column; align-items: center; min-width: 120px; min-height: ${lineWidth + 60}px;">
+		<div style="position: relative; display: flex; flex-direction: column; align-items: center; min-width: 120px; min-height: ${lineWidth + 60}px; opacity: 0;">
 			
 			<!-- Texto do callout (no topo) -->
 			<div style="position: absolute; bottom: ${lineWidth + 8}px; left: 50%; transform: translateX(-50%); display: flex; justify-content: center;">
@@ -472,10 +507,20 @@ export function generateCalloutHTML(
 			.psv-callout.psv-callout--exiting .psv-callout__text-down {
 				animation: flag-slide-out-down 0.2s cubic-bezier(.4,1.4,.6,1) both;
 			}
+
+			/* ========== FADE-IN INICIAL AO TROCAR DE CENA ========== */
+			.psv-callout--fade-in {
+				animation: callout-fade-in 0.5s ease-in-out forwards;
+			}
+
+			@keyframes callout-fade-in {
+				0% { opacity: 0; }
+				100% { opacity: 1; }
+			}
 		</style>
 
 		<!-- ========== ESTRUTURA HTML DO CALLOUT (DOWN) ========== -->
-		<div style="position: relative; display: flex; flex-direction: column; align-items: center; min-width: 120px; min-height: ${lineWidth + 60}px;">
+		<div style="position: relative; display: flex; flex-direction: column; align-items: center; min-width: 120px; min-height: ${lineWidth + 60}px; opacity: 0;">
 			
 			<!-- Círculo principal com animação pulsante (no topo) -->
 			<div style="position: absolute; top: ${-main / 2}px; left: 50%; transform: translateX(-50%); width: ${main}px; height: ${main}px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index:2;">
@@ -604,10 +649,20 @@ export function generateCalloutHTML(
 			.psv-callout.psv-callout--exiting .psv-callout__text-se {
 				animation: flag-slide-out-se 0.2s cubic-bezier(.4,1.4,.6,1) both;
 			}
+
+			/* ========== FADE-IN INICIAL AO TROCAR DE CENA ========== */
+			.psv-callout--fade-in {
+				animation: callout-fade-in 0.5s ease-in-out forwards;
+			}
+
+			@keyframes callout-fade-in {
+				0% { opacity: 0; }
+				100% { opacity: 1; }
+			}
 		</style>
 
 		<!-- ========== ESTRUTURA HTML DO CALLOUT (SE - SOUTHEAST) ========== -->
-		<div style="position: relative; display: flex; align-items: flex-start; min-width: 120px; min-height: 60px;">
+		<div style="position: relative; display: flex; align-items: flex-start; min-width: 120px; min-height: 60px; opacity: 0;">
 			
 			<!-- Círculo principal com animação pulsante -->
 			<div style="position: absolute; top: ${-main / 2}px; left: ${-main / 2}px; width: ${main}px; height: ${main}px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index:2;">
@@ -739,10 +794,20 @@ export function generateCalloutHTML(
 			.psv-callout.psv-callout--exiting .psv-callout__text-ne {
 				animation: flag-slide-out-ne 0.2s cubic-bezier(.4,1.4,.6,1) both;
 			}
+
+			/* ========== FADE-IN INICIAL AO TROCAR DE CENA ========== */
+			.psv-callout--fade-in {
+				animation: callout-fade-in 0.5s ease-in-out forwards;
+			}
+
+			@keyframes callout-fade-in {
+				0% { opacity: 0; }
+				100% { opacity: 1; }
+			}
 		</style>
 
 		<!-- ========== ESTRUTURA HTML DO CALLOUT (NE - NORTHEAST) ========== -->
-		<div style="position: relative; display: flex; align-items: flex-end; min-width: 120px; min-height: 60px;">
+		<div style="position: relative; display: flex; align-items: flex-end; min-width: 120px; min-height: 60px; opacity: 0;">
 			
 			<!-- Círculo principal com animação pulsante -->
 			<div style="position: absolute; bottom: ${-main / 2}px; left: ${-main / 2}px; width: ${main}px; height: ${main}px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index:2;">
@@ -874,10 +939,20 @@ export function generateCalloutHTML(
 			.psv-callout.psv-callout--exiting .psv-callout__text-nw {
 				animation: flag-slide-out-nw 0.2s cubic-bezier(.4,1.4,.6,1) both;
 			}
+
+			/* ========== FADE-IN INICIAL AO TROCAR DE CENA ========== */
+			.psv-callout--fade-in {
+				animation: callout-fade-in 0.5s ease-in-out forwards;
+			}
+
+			@keyframes callout-fade-in {
+				0% { opacity: 0; }
+				100% { opacity: 1; }
+			}
 		</style>
 
 		<!-- ========== ESTRUTURA HTML DO CALLOUT (NW - NORTHWEST) ========== -->
-		<div style="position: relative; display: flex; align-items: flex-start; min-width: 120px; min-height: 60px;">
+		<div style="position: relative; display: flex; align-items: flex-start; min-width: 120px; min-height: 60px; opacity: 0;">
 			
 			<!-- Círculo principal com animação pulsante -->
 			<div style="position: absolute; top: ${-main / 2}px; right: ${-main / 2}px; width: ${main}px; height: ${main}px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index:2;">
@@ -1009,10 +1084,20 @@ export function generateCalloutHTML(
 			.psv-callout.psv-callout--exiting .psv-callout__text-sw {
 				animation: flag-slide-out-sw 0.2s cubic-bezier(.4,1.4,.6,1) both;
 			}
+
+			/* ========== FADE-IN INICIAL AO TROCAR DE CENA ========== */
+			.psv-callout--fade-in {
+				animation: callout-fade-in 0.5s ease-in-out forwards;
+			}
+
+			@keyframes callout-fade-in {
+				0% { opacity: 0; }
+				100% { opacity: 1; }
+			}
 		</style>
 
 		<!-- ========== ESTRUTURA HTML DO CALLOUT (SW - SOUTHWEST) ========== -->
-		<div style="position: relative; display: flex; align-items: flex-start; min-width: 120px; min-height: 60px;">
+		<div style="position: relative; display: flex; align-items: flex-start; min-width: 120px; min-height: 60px; opacity: 0;">
 			
 			<!-- Círculo principal com animação pulsante -->
 			<div style="position: absolute; top: ${-main / 2}px; right: ${-main / 2}px; width: ${main}px; height: ${main}px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index:2;">

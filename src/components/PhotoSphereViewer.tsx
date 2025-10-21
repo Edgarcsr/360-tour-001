@@ -3,7 +3,7 @@
 import { EquirectangularTilesAdapter } from "@photo-sphere-viewer/equirectangular-tiles-adapter";
 import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
 import { LensflarePlugin } from "photo-sphere-viewer-lensflare-plugin";
-import { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState, useEffect } from "react";
 import {
 	type PluginConfig,
 	ReactPhotoSphereViewer,
@@ -75,18 +75,33 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 	const [currentLensflares, setCurrentLensflares] = useState(lensflares);
 
 	const viewerRef = useRef<any>(null);
+	const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+	const transitionStartTimeRef = useRef<number>(0);
 
 	// Expor métodos através do ref
 	useImperativeHandle(ref, () => ({
 		setPanorama: (newSrc: string, transition?: TransitionOptions) => {
 			if (viewerRef.current) {
 				setIsLoading(true); // Mostra loading ao trocar panorama
+				transitionStartTimeRef.current = Date.now();
+				
+				// Clear any pending loading timeout
+				if (loadingTimeoutRef.current) {
+					clearTimeout(loadingTimeoutRef.current);
+				}
+				
 				viewerRef.current.setPanorama(newSrc, transition);
 			}
 		},
 		setScene: (scene: Scene, transition?: TransitionOptions) => {
 			if (viewerRef.current) {
 				setIsLoading(true); // Mostra loading ao trocar cena
+				transitionStartTimeRef.current = Date.now();
+
+				// Clear any pending loading timeout
+				if (loadingTimeoutRef.current) {
+					clearTimeout(loadingTimeoutRef.current);
+				}
 
 				// Limpa os markers atuais do plugin
 				const markersPlugin = viewerRef.current.getPlugin(MarkersPlugin);
@@ -99,8 +114,18 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 				setCurrentCallouts(scene.callouts || []);
 				setCurrentLensflares(scene.lensflares || []);
 
+				// Get transition speed to ensure minimum loading time
+				const transitionSpeed = transition?.speed || defaultTransition?.speed || 1500;
+				const minLoadingTime = typeof transitionSpeed === "number" ? transitionSpeed : 1500;
+
 				// Muda o panorama
 				viewerRef.current.setPanorama(scene.panorama, transition);
+
+				// Force minimum loading time to allow transition to be visible
+				// This prevents instant jumps when images are cached
+				loadingTimeoutRef.current = setTimeout(() => {
+					setIsLoading(false);
+				}, minLoadingTime);
 
 				// Adiciona os novos markers após um pequeno delay
 				setTimeout(() => {
@@ -135,6 +160,15 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 		},
 	}));
 
+	// Cleanup timeout on unmount
+	useEffect(() => {
+		return () => {
+			if (loadingTimeoutRef.current) {
+				clearTimeout(loadingTimeoutRef.current);
+			}
+		};
+	}, []);
+
 	const handleReady = (instance: any) => {
 		viewerRef.current = instance;
 
@@ -143,9 +177,8 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 			setIsLoading(true);
 		});
 
-		instance.addEventListener("panorama-loaded", () => {
-			setIsLoading(false);
-		});
+		// No longer relying on panorama-loaded for hiding loading
+		// We use timeout based on transition speed instead
 
 		// Oculta o loading inicial
 		setIsLoading(false);

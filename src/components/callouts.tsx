@@ -19,6 +19,7 @@ export const Callout: React.FC<{
 }> = ({ id, position, camera }) => {
 	const [wasActive, setWasActive] = useState(false);
 	const [elementReady, setElementReady] = useState(false);
+	const [justMounted, setJustMounted] = useState(true);
 
 	// Lógica para saber se está sendo visto
 	const yaw = parseDeg(position.yaw);
@@ -33,6 +34,16 @@ export const Callout: React.FC<{
 			const el = document.getElementById(`psv-marker-${id}`);
 			if (el) {
 				setElementReady(true);
+				// Adiciona a classe de fade-in inicial
+				el.classList.add("psv-callout--fade-in");
+				// Remove a classe após a animação terminar
+				setTimeout(() => {
+					const element = document.getElementById(`psv-marker-${id}`);
+					if (element) {
+						element.classList.remove("psv-callout--fade-in");
+						setJustMounted(false);
+					}
+				}, 500); // Duração da animação de fade-in
 			} else {
 				// Tenta novamente após um pequeno delay
 				setTimeout(checkElement, 10);
@@ -43,7 +54,7 @@ export const Callout: React.FC<{
 
 	// Adiciona/remove classe no DOM para cada marker individualmente
 	useEffect(() => {
-		if (!elementReady) return;
+		if (!elementReady || justMounted) return;
 
 		const el = document.getElementById(`psv-marker-${id}`);
 		if (el) {
@@ -67,7 +78,7 @@ export const Callout: React.FC<{
 				}, 300); // Duração reduzida da animação de saída
 			}
 		}
-	}, [isActive, id, wasActive, elementReady]);
+	}, [isActive, id, wasActive, elementReady, justMounted]);
 
 	return null;
 };
