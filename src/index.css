@@ -5,12 +5,15 @@
 /* Aumenta especificidade para sobrescrever estilos do Photo Sphere Viewer */
 div .psv-tooltip,
 .psv-container .psv-tooltip {
-  background: #222;
+  background: #222222da;
   color: #fff;
-  border-radius: 2px;
   font-size: 1.1em;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   overflow: hidden;
+  border-radius: 1rem;
+  backdrop-filter: blur(5px);
+  text-align: center;
+  max-width: fit-content;
 }
 
 /* Oculta o loading original do PhotoSphere */

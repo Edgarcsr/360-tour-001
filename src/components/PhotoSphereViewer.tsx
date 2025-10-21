@@ -32,6 +32,7 @@ interface PhotoSphereViewerProps {
 	lensflares?: any[];
 	compass?: boolean;
 	onMarkerClick?: (markerId: string) => void;
+	onSceneChange?: (scene: Scene) => void;
 	height?: string;
 	width?: string;
 	defaultTransition?: TransitionOptions;
@@ -50,6 +51,7 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 		callouts = [],
 		lensflares = [],
 		onMarkerClick,
+		onSceneChange,
 		height = "100vh",
 		width = "100%",
 		defaultTransition,
@@ -152,7 +154,7 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 				markersPlugin,
 				currentMarkers.concat(currentCallouts || []),
 				ref,
-				undefined,
+				onSceneChange,
 				onMarkerClick,
 			);
 		}

@@ -69,6 +69,7 @@ function App() {
 								lensflares={currentScene.lensflares}
 								compass={true}
 								onMarkerClick={handleMarkerClick}
+								onSceneChange={setCurrentScene}
 								height="100vh"
 								width="100%"
 								defaultTransition={{
