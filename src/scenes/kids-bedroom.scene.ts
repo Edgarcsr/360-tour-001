@@ -5,7 +5,7 @@ import { createAnimatedCircleMarker } from "@/components/markers";
 export const kidsBedroomScene: Scene = {
 	id: "kidsBedroom",
 	name: "Quarto das Crianças",
-	panorama: "IMG_20251016_120936_00_005(2).JPG",
+	panorama: "IMG_20251016_120936_00_005(2).webp",
 	icon: Baby,
 	markers: [
 		createAnimatedCircleMarker({
