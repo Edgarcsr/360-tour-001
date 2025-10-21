@@ -18,8 +18,17 @@ export const createAnimatedCircleMarker = ({
 	size = { width: 32, height: 32 },
 	anchor = "center",
 	borderSize = 3,
-}: Omit<MarkerButton, "image" | "html"> & { borderSize?: number }) => {
+	tilted,
+}: Omit<MarkerButton, "image" | "html"> & {
+	borderSize?: number;
+	tilted?: true;
+}) => {
 	const main = Math.min(size.width, size.height);
+	const tiltTransform = tilted ? "perspective(100px) rotateX(60deg)" : "";
+	const containerStyle = tilted
+		? `width: ${main}px; height: ${main}px; transform: ${tiltTransform}; transform-style: preserve-3d;`
+		: `width: ${main}px; height: ${main}px;`;
+
 	return {
 		id,
 		position,
@@ -33,24 +42,35 @@ export const createAnimatedCircleMarker = ({
 						70% { transform: scale(2.2); opacity: 0; }
 						100% { transform: scale(2.2); opacity: 0; }
 					}
+					${
+						tilted
+							? `
+					@keyframes grow-fade-tilted {
+						0% { transform: scale(1); opacity: 0.6; }
+						70% { transform: scale(2.2); opacity: 0; }
+						100% { transform: scale(2.2); opacity: 0; }
+					}
+					`
+							: ""
+					}
 				</style>
-				<div class="relative flex items-center justify-center" style="width: ${main}px; height: ${main}px;">
+				<div class="relative flex items-center justify-center" style="${containerStyle}">
 					   <div
 						   class="absolute rounded-full border opacity-50"
-						   style="width: ${main - 2 * borderSize}px; height: ${main - 2 * borderSize}px; border-width: ${borderSize}px; border-color: #fff; animation: grow-fade 1.6s infinite; background: transparent;"
+						   style="width: ${main - 2 * borderSize}px; height: ${main - 2 * borderSize}px; border-width: ${borderSize}px; border-color: #fff; animation: ${tilted ? "grow-fade-tilted" : "grow-fade"} 1.6s infinite; background: transparent; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);"
 					   ></div>
 					   <div
-						   class="relative rounded-full shadow-lg"
-						   style="width: ${main}px; height: ${main}px; background-color: #fff;"
+						   class="relative rounded-full"
+						   style="width: ${main}px; height: ${main}px; background-color: #fff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.3);"
 					   ></div>
 				</div>
 			`,
 	};
 };
 
-import type { PhotoSphereViewerRef } from "./PhotoSphereViewer";
-import { scenes as defaultScenes } from "@/scenes";
 import type { Scene } from "@/scenes";
+import { scenes as defaultScenes } from "@/scenes";
+import type { PhotoSphereViewerRef } from "./PhotoSphereViewer";
 
 export const setupMarkerEvents = (
 	markersPlugin: any,
@@ -74,7 +94,10 @@ export const setupMarkerEvents = (
 		if (targetScene) {
 			// Mirror the menu behaviour when the forwarded ref exposes setScene.
 			let didPerformSceneChange = false;
-			if (viewerRef?.current && typeof viewerRef.current.setScene === "function") {
+			if (
+				viewerRef?.current &&
+				typeof viewerRef.current.setScene === "function"
+			) {
 				try {
 					viewerRef.current.setScene(targetScene, {
 						speed: 2000,

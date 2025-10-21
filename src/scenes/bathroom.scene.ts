@@ -10,8 +10,15 @@ export const bathroomScene: Scene = {
 	markers: [
 		createAnimatedCircleMarker({
 			id: "hallway",
-			position: { yaw: "98.5deg", pitch: "-14.4deg" },
+			position: { yaw: "95.4deg", pitch: "-51.1deg" },
 			tooltip: "Ir para o corredor",
+			tilted: true,
+		}),
+		createAnimatedCircleMarker({
+			id: "kidsBedroom",
+			position: { yaw: "74.4deg", pitch: "-28.4deg" },
+			tooltip: "Ir para o quarto das crianças",
+			tilted: true,
 		}),
 	],
 	callouts: [],

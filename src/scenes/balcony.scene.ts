@@ -10,8 +10,9 @@ export const balconyScene: Scene = {
 	markers: [
 		createAnimatedCircleMarker({
 			id: "livingRoom",
-			position: { yaw: "0deg", pitch: "0deg" },
+			position: { yaw: "1.7deg", pitch: "-26.1deg" },
 			tooltip: "Ir para a sala de estar",
+			tilted: true,
 		}),
 	],
 	callouts: [],

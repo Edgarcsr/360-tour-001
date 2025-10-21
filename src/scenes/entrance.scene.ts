@@ -15,13 +15,15 @@ export const entranceScene: Scene = {
 		}),
 		createAnimatedCircleMarker({
 			id: "livingRoom",
-			position: { yaw: "134.6deg", pitch: "-4.8deg" },
+			position: { yaw: "134.3deg", pitch: "-18.2deg" },
 			tooltip: "Ir para a sala de estar",
+			tilted: true,
 		}),
 		createAnimatedCircleMarker({
 			id: "kitchen",
-			position: { yaw: "168.4deg", pitch: "-4.8deg" },
+			position: { yaw: "169.3deg", pitch: "-18.7deg" },
 			tooltip: "Ir para a cozinha",
+			tilted: true,
 		}),
 	],
 	callouts: [],

@@ -10,18 +10,21 @@ export const livingRoomScene: Scene = {
 	markers: [
 		createAnimatedCircleMarker({
 			id: "hallway",
-			position: { yaw: "19.4deg", pitch: "-5.7deg" },
+			position: { yaw: "14.4deg", pitch: "-26.2deg" },
 			tooltip: "Ir para o corredor",
+			tilted: true,
 		}),
 		createAnimatedCircleMarker({
 			id: "entrance",
-			position: { yaw: "324.3deg", pitch: "-3.1deg" },
+			position: { yaw: "321.7deg", pitch: "-16.8deg" },
 			tooltip: "Ir para a entrada",
+			tilted: true,
 		}),
 		createAnimatedCircleMarker({
 			id: "balcony",
-			position: { yaw: "180.2deg", pitch: "-8.2deg" },
+			position: { yaw: "179.6deg", pitch: "-32.0deg" },
 			tooltip: "Ir para a varanda",
+			tilted: true,
 		}),
 	],
 	callouts: [],
