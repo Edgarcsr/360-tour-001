@@ -10,8 +10,8 @@ import {
 } from "react-photo-sphere-viewer";
 import type { Scene } from "../scenes";
 import { Callout } from "./callouts";
-import { setupMarkerEvents } from "./markers";
 import { LoadingSpinner } from "./LoadingSpinner";
+import { setupMarkerEvents } from "./markers";
 
 interface TransitionOptions {
 	speed?: number | string;
@@ -148,7 +148,13 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 		if (markersPlugin) {
 			// delegate marker click handling to the shared helper
 			// pass the forwarded ref so callers can call setScene on the exposed API
-			setupMarkerEvents(markersPlugin, currentMarkers.concat(currentCallouts || []), ref, undefined, onMarkerClick);
+			setupMarkerEvents(
+				markersPlugin,
+				currentMarkers.concat(currentCallouts || []),
+				ref,
+				undefined,
+				onMarkerClick,
+			);
 		}
 	};
 
