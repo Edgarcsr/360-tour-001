@@ -1,11 +1,11 @@
 import { SproutIcon } from "lucide-react";
-import type { Scene } from "./types";
 import { createAnimatedCircleMarker } from "@/components/markers";
+import type { Scene } from "./types";
 
 export const balconyScene: Scene = {
 	id: "balcony",
 	name: "Varanda",
-	panorama: "IMG_20251016_121255_00_011.webp",
+	panorama: `${import.meta.env.BASE_URL}IMG_20251016_121255_00_011.webp`,
 	icon: SproutIcon,
 	markers: [
 		createAnimatedCircleMarker({

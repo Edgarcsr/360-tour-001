@@ -1,11 +1,11 @@
 import { ToiletIcon } from "lucide-react";
-import type { Scene } from "./types";
 import { createAnimatedCircleMarker } from "@/components/markers";
+import type { Scene } from "./types";
 
 export const bathroomScene: Scene = {
 	id: "bathroom",
 	name: "Banheiro",
-	panorama: "IMG_20251016_120645_00_003.webp",
+	panorama: `${import.meta.env.BASE_URL}IMG_20251016_120645_00_003.webp`,
 	icon: ToiletIcon,
 	markers: [
 		createAnimatedCircleMarker({

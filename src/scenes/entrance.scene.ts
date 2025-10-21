@@ -1,11 +1,11 @@
 import { DoorClosed } from "lucide-react";
-import type { Scene } from "./types";
 import { createAnimatedCircleMarker } from "@/components/markers";
+import type { Scene } from "./types";
 
 export const entranceScene: Scene = {
 	id: "entrance",
 	name: "Entrada",
-	panorama: "IMG_20251016_121045_00_006.webp",
+	panorama: `${import.meta.env.BASE_URL}IMG_20251016_121045_00_006.webp`,
 	icon: DoorClosed,
 	markers: [
 		createAnimatedCircleMarker({

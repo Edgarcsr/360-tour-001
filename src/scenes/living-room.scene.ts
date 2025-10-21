@@ -5,7 +5,7 @@ import type { Scene } from "./types";
 export const livingRoomScene: Scene = {
 	id: "livingRoom",
 	name: "Sala de Estar",
-	panorama: "IMG_20251016_121219_00_010.webp",
+	panorama: `${import.meta.env.BASE_URL}IMG_20251016_121219_00_010.webp`,
 	icon: Tv,
 	markers: [
 		createAnimatedCircleMarker({
