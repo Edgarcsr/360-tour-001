@@ -3,7 +3,13 @@
 import { EquirectangularTilesAdapter } from "@photo-sphere-viewer/equirectangular-tiles-adapter";
 import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
 import { LensflarePlugin } from "photo-sphere-viewer-lensflare-plugin";
-import { forwardRef, useImperativeHandle, useRef, useState, useEffect } from "react";
+import {
+	forwardRef,
+	useEffect,
+	useImperativeHandle,
+	useRef,
+	useState,
+} from "react";
 import {
 	type PluginConfig,
 	ReactPhotoSphereViewer,
@@ -77,26 +83,51 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 	const viewerRef = useRef<any>(null);
 	const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 	const transitionStartTimeRef = useRef<number>(0);
+	const isTransitioningRef = useRef<boolean>(false);
 
 	// Expor métodos através do ref
 	useImperativeHandle(ref, () => ({
 		setPanorama: (newSrc: string, transition?: TransitionOptions) => {
-			if (viewerRef.current) {
-				setIsLoading(true); // Mostra loading ao trocar panorama
+			if (viewerRef.current && !isTransitioningRef.current) {
+				isTransitioningRef.current = true;
+				setIsLoading(true);
 				transitionStartTimeRef.current = Date.now();
-				
+
+				console.log("setPanorama - Loading:", newSrc);
+
 				// Clear any pending loading timeout
 				if (loadingTimeoutRef.current) {
 					clearTimeout(loadingTimeoutRef.current);
 				}
-				
-				viewerRef.current.setPanorama(newSrc, transition);
+
+				// Get transition speed
+				const transitionSpeed =
+					transition?.speed || defaultTransition?.speed || 750;
+				const minTransitionTime =
+					typeof transitionSpeed === "number" ? transitionSpeed : 750;
+
+				// Set panorama with transition
+				viewerRef.current.setPanorama(newSrc, transition || defaultTransition);
+
+				// Guarantee minimum transition time
+				loadingTimeoutRef.current = setTimeout(() => {
+					setIsLoading(false);
+					isTransitioningRef.current = false;
+				}, minTransitionTime);
 			}
 		},
 		setScene: (scene: Scene, transition?: TransitionOptions) => {
-			if (viewerRef.current) {
-				setIsLoading(true); // Mostra loading ao trocar cena
+			if (viewerRef.current && !isTransitioningRef.current) {
+				isTransitioningRef.current = true;
+				setIsLoading(true);
 				transitionStartTimeRef.current = Date.now();
+
+				console.log(
+					"setScene - Loading scene:",
+					scene.name,
+					"Panorama:",
+					scene.panorama,
+				);
 
 				// Clear any pending loading timeout
 				if (loadingTimeoutRef.current) {
@@ -115,20 +146,31 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 				setCurrentLensflares(scene.lensflares || []);
 
 				// Get transition speed to ensure minimum loading time
-				const transitionSpeed = transition?.speed || defaultTransition?.speed || 1500;
-				const minLoadingTime = typeof transitionSpeed === "number" ? transitionSpeed : 1500;
+				const transitionSpeed =
+					transition?.speed || defaultTransition?.speed || 750;
+				const minTransitionTime =
+					typeof transitionSpeed === "number" ? transitionSpeed : 750;
 
-				// Muda o panorama
-				viewerRef.current.setPanorama(scene.panorama, transition);
+				// Merge transition options with defaults
+				const finalTransition = {
+					speed: transitionSpeed,
+					rotation:
+						transition?.rotation !== undefined
+							? transition.rotation
+							: defaultTransition?.rotation || true,
+					effect: transition?.effect || defaultTransition?.effect || "fade",
+				};
 
-				// Force minimum loading time to allow transition to be visible
+				// Muda o panorama com transição garantida
+				viewerRef.current.setPanorama(scene.panorama, finalTransition);
+
+				// Force minimum transition time to ensure it's always visible
 				// This prevents instant jumps when images are cached
 				loadingTimeoutRef.current = setTimeout(() => {
 					setIsLoading(false);
-				}, minLoadingTime);
+					isTransitioningRef.current = false;
 
-				// Adiciona os novos markers após um pequeno delay
-				setTimeout(() => {
+					// Adiciona os novos markers após a transição completar
 					if (markersPlugin) {
 						const allMarkers = [
 							...(scene.markers || []),
@@ -147,7 +189,7 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 							} else if (typeof lensflarePlugin.set === "function") {
 								try {
 									lensflarePlugin.set({ lensflares: scene.lensflares || [] });
-								} catch (e) {
+								} catch {
 									// ignore if incompatible
 								}
 							}
@@ -155,7 +197,7 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 					} catch (_) {
 						// ignore plugin errors
 					}
-				}, 100);
+				}, minTransitionTime);
 			}
 		},
 	}));
@@ -172,16 +214,37 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 	const handleReady = (instance: any) => {
 		viewerRef.current = instance;
 
-		// Adiciona listeners para eventos de carregamento
+		// Remove listener antigos se existirem
+		try {
+			instance.removeEventListener("panorama-load-progress");
+			instance.removeEventListener("panorama-loaded");
+			instance.removeEventListener("panorama-error");
+		} catch {
+			// ignore if no listeners to remove
+		}
+
+		// Adiciona listener para garantir que loading state esteja correto
 		instance.addEventListener("panorama-load-progress", () => {
-			setIsLoading(true);
+			if (!isTransitioningRef.current) {
+				setIsLoading(true);
+			}
 		});
 
-		// No longer relying on panorama-loaded for hiding loading
-		// We use timeout based on transition speed instead
+		// Adiciona listener para erros de carregamento
+		instance.addEventListener("panorama-error", (event: any) => {
+			console.error("Erro ao carregar panorama:", event);
+			setIsLoading(false);
+			isTransitioningRef.current = false;
 
-		// Oculta o loading inicial
+			// Clear any pending timeout
+			if (loadingTimeoutRef.current) {
+				clearTimeout(loadingTimeoutRef.current);
+			}
+		});
+
+		// Oculta o loading inicial após montagem
 		setIsLoading(false);
+		isTransitioningRef.current = false;
 
 		const markersPlugin = instance.getPlugin(MarkersPlugin);
 		if (markersPlugin) {

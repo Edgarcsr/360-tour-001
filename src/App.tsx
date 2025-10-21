@@ -35,7 +35,7 @@ function App() {
 		if (targetScene) {
 			if (viewerRef.current && currentScene.id !== targetScene.id) {
 				viewerRef.current.setScene(targetScene, {
-					speed: 2000,
+					speed: 1000,
 					rotation: true,
 					effect: "fade",
 				});
@@ -73,7 +73,7 @@ function App() {
 								height="100vh"
 								width="100%"
 								defaultTransition={{
-									speed: 1500,
+									speed: 750,
 									rotation: true,
 									effect: "fade",
 								}}

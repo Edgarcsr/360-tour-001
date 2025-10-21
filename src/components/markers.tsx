@@ -100,7 +100,7 @@ export const setupMarkerEvents = (
 			) {
 				try {
 					viewerRef.current.setScene(targetScene, {
-						speed: 2000,
+						speed: 1000,
 						rotation: true,
 						effect: "fade",
 					});
