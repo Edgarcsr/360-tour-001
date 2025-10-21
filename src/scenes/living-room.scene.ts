@@ -1,6 +1,6 @@
 import { Tv } from "lucide-react";
-import type { Scene } from "./types";
 import { createAnimatedCircleMarker } from "@/components/markers";
+import type { Scene } from "./types";
 
 export const livingRoomScene: Scene = {
 	id: "livingRoom",
