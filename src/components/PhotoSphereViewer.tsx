@@ -187,6 +187,7 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 				}
 				panorama={(typeof src === "object" ? (src as any) : undefined) as any}
 				navbar={false}
+				defaultZoomLvl={0}
 				plugins={plugins}
 				// when not using tiled panorama, pass src as string
 				src={(typeof src === "string" ? (src as any) : undefined) as any}
