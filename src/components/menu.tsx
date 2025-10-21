@@ -65,21 +65,23 @@ export function Menu({
 						<DrawerDescription>
 							Clique na área que deseja explorar.
 						</DrawerDescription>
-						{scenesToShow.map((scene) => {
-							const Icon = scene.icon as React.ComponentType<unknown>;
-							return (
-								<Button
-									key={scene.id}
-									id={scene.id}
-									variant={currentScene.id === scene.id ? "default" : "ghost"}
-									onClick={() => handleSceneChange(scene)}
-									className="justify-start"
-								>
-									<Icon />
-									{scene.name}
-								</Button>
-							);
-						})}
+						<div className="max-h-[60vh] overflow-y-auto space-y-2 py-2 flex flex-col">
+							{scenesToShow.map((scene) => {
+								const Icon = scene.icon as React.ComponentType<unknown>;
+								return (
+									<Button
+										key={scene.id}
+										id={scene.id}
+										variant={currentScene.id === scene.id ? "default" : "ghost"}
+										onClick={() => handleSceneChange(scene)}
+										className="justify-start"
+									>
+										<Icon />
+										{scene.name}
+									</Button>
+								);
+							})}
+						</div>
 					</DrawerHeader>
 
 					{enableCrosshairFeature && (
