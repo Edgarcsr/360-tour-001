@@ -64,19 +64,11 @@ export function Menu({
 				<div className="p-6 border-b border-border">
 					<div className="flex items-center justify-center mb-4">
 						<img
-							src={`${import.meta.env.BASE_URL}logo.png`}
+							src={`${import.meta.env.BASE_URL}mf7-logo-ode-vila-clementino.jpg`}
 							alt="Logo"
-							className="h-24 w-auto object-contain"
-							onError={(e) => {
-								// Fallback caso a logo não exista
-								(e.target as HTMLImageElement).style.display = "none";
-							}}
+							className="h-24 w-auto object-contain rounded-md"
 						/>
 					</div>
-					<h2 className="font-semibold text-center text-foreground">
-						UPPER WEST
-					</h2>
-					<p className="text-sm text-center text-muted-foreground">BUTANTÃ</p>
 				</div>
 
 				{/* Lista de cenas */}
