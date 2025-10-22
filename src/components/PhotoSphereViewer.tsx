@@ -22,6 +22,8 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { setupMarkerEvents } from "./markers";
 
 Cache.enabled = false;
+Cache.ttl = 300;
+Cache.maxItems = 0;
 
 interface TransitionOptions {
 	speed?: number | string;
