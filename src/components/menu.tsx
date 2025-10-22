@@ -43,7 +43,7 @@ export function Menu({
 			<button
 				type="button"
 				onClick={() => setIsMenuVisible(!isMenuVisible)}
-				className="absolute top-4 left-4 z-20 p-2 bg-background/80 backdrop-blur-sm border border-border rounded-md shadow-lg hover:bg-background transition-all"
+				className="absolute top-4 left-4 z-[100] p-2 bg-background/80 backdrop-blur-sm border border-border rounded-md shadow-lg hover:bg-background transition-all"
 				style={{
 					left: isMenuVisible ? "280px" : "16px",
 					transition: "left 0.3s ease-in-out",
@@ -54,7 +54,7 @@ export function Menu({
 
 			{/* Menu lateral fixo */}
 			<aside
-				className="fixed top-0 left-0 h-screen z-10 bg-background/95 backdrop-blur-sm border-r border-border shadow-2xl transition-transform duration-300 ease-in-out flex flex-col"
+				className="fixed top-0 left-0 h-screen z-[90] bg-background/95 backdrop-blur-sm border-r border-border shadow-2xl transition-transform duration-300 ease-in-out flex flex-col"
 				style={{
 					width: "280px",
 					transform: isMenuVisible ? "translateX(0)" : "translateX(-100%)",
