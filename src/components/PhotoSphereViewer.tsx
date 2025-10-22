@@ -48,6 +48,8 @@ interface PhotoSphereViewerProps {
 	emitCamera?: boolean;
 	// loading type: "spinner" (default with overlay) or "bar" (discrete bottom bar)
 	loadingType?: "spinner" | "bar";
+	// list of all scenes for marker navigation
+	scenesList?: Scene[];
 }
 
 export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
@@ -65,6 +67,7 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 		width = "100%",
 		defaultTransition,
 		loadingType = "spinner",
+		scenesList = [],
 	} = props;
 
 	const [camera, setCamera] = useState<{ yaw: number; pitch: number }>({
@@ -256,6 +259,7 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 				ref,
 				onSceneChange,
 				onMarkerClick,
+				scenesList,
 			);
 		}
 	};

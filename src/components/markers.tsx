@@ -68,8 +68,8 @@ export const createAnimatedCircleMarker = ({
 	};
 };
 
-import type { Scene } from "@/scenes";
-import { scenes as defaultScenes } from "@/scenes";
+// Import Scene type from types file to avoid circular dependency
+import type { Scene } from "@/scenes/types";
 import type { PhotoSphereViewerRef } from "./PhotoSphereViewer";
 
 export const setupMarkerEvents = (
@@ -78,7 +78,7 @@ export const setupMarkerEvents = (
 	viewerRef?: React.RefObject<PhotoSphereViewerRef | null>,
 	onSceneChange?: (scene: Scene) => void,
 	onMarkerClick?: (markerId: string) => void,
-	scenesList: Scene[] = defaultScenes,
+	scenesList: Scene[] = [],
 ) => {
 	markersPlugin.addEventListener("select-marker", (e: any) => {
 		const marker = markers.find((m) => m.id === e.marker.id);
