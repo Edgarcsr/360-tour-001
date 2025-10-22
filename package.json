@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@photo-sphere-viewer/compass-plugin": "^5.13.4",
+    "@photo-sphere-viewer/core": "^5.13.4",
     "@photo-sphere-viewer/equirectangular-tiles-adapter": "~5.13.4",
     "@photo-sphere-viewer/markers-plugin": "^5.13.4",
     "@radix-ui/react-context-menu": "^2.2.16",
