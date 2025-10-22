@@ -1,5 +1,6 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <Not needed> */
 
+import { Cache } from "@photo-sphere-viewer/core";
 import { EquirectangularTilesAdapter } from "@photo-sphere-viewer/equirectangular-tiles-adapter";
 import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
 import { LensflarePlugin } from "photo-sphere-viewer-lensflare-plugin";
@@ -19,6 +20,8 @@ import { Callout } from "./callouts";
 import { LoadingBar } from "./LoadingBar";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { setupMarkerEvents } from "./markers";
+
+Cache.enabled = false;
 
 interface TransitionOptions {
 	speed?: number | string;
