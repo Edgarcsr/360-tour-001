@@ -8,12 +8,6 @@ import {
 	PhotoSphereViewer,
 	type PhotoSphereViewerRef,
 } from "./components/PhotoSphereViewer";
-import {
-	ContextMenu,
-	ContextMenuContent,
-	ContextMenuItem,
-	ContextMenuTrigger,
-} from "./components/ui/context-menu";
 import { scenes } from "./scenes";
 
 function App() {
@@ -30,66 +24,46 @@ function App() {
 
 	// Handler para cliques nos markers
 	const handleMarkerClick = (markerId: string) => {
-		// Buscar a cena alvo por id (por convenção, o marker pode ter o mesmo id da cena alvo)
-		const targetScene = scenes.find((s) => s.id === markerId);
-		if (targetScene) {
-			if (viewerRef.current && currentScene.id !== targetScene.id) {
-				viewerRef.current.setScene(targetScene, {
-					speed: 2000,
-					rotation: true,
-					effect: "fade",
-				});
-				setCurrentScene(targetScene);
-			}
-		} else {
-			console.log(`Marker clicked: ${markerId}`);
-		}
+		// A transição já é feita no setupMarkerEvents (markers.tsx)
+		// Este handler só é chamado se não houve mudança de cena
+		console.log(`Marker clicked: ${markerId}`);
 	};
 
 	return (
 		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 			<div style={{ position: "relative" }}>
-				<ContextMenu>
-					<ContextMenuTrigger>
-						<div>
-							<Menu
-								viewerRef={viewerRef}
-								currentScene={currentScene}
-								onSceneChange={setCurrentScene}
-								scenes={scenes}
-								crosshairEnabled={crosshairEnabled}
-								setCrosshairEnabled={setCrosshairEnabled}
-								enableCrosshairFeature={enableCrosshairFeature}
-							/>
-							<PhotoSphereViewer
-								ref={viewerRef}
-								src={currentScene.panorama}
-								markers={currentScene.markers}
-								callouts={currentScene.callouts}
-								lensflares={currentScene.lensflares}
-								compass={true}
-								onMarkerClick={handleMarkerClick}
-								height="100vh"
-								width="100%"
-								defaultTransition={{
-									speed: 1500,
-									rotation: true,
-									effect: "fade",
-								}}
-								onCameraChange={(cam) => setCamera(cam)}
-								emitCamera={enableCrosshairFeature}
-							/>
-							{enableCrosshairFeature && (
-								<Crosshair enabled={crosshairEnabled} camera={camera} />
-							)}
-						</div>
-					</ContextMenuTrigger>
-					<ContextMenuContent>
-						<ContextMenuItem>
-							Feito por Edgar C. S. Ribeiro &copy; 2025
-						</ContextMenuItem>
-					</ContextMenuContent>
-				</ContextMenu>
+				<Menu
+					viewerRef={viewerRef}
+					currentScene={currentScene}
+					onSceneChange={setCurrentScene}
+					scenes={scenes}
+					crosshairEnabled={crosshairEnabled}
+					setCrosshairEnabled={setCrosshairEnabled}
+					enableCrosshairFeature={enableCrosshairFeature}
+				/>
+				<PhotoSphereViewer
+					ref={viewerRef}
+					src={currentScene.panorama}
+					markers={currentScene.markers}
+					callouts={currentScene.callouts}
+					lensflares={currentScene.lensflares}
+					compass={true}
+					onMarkerClick={handleMarkerClick}
+					onSceneChange={setCurrentScene}
+					height="100vh"
+					width="100%"
+					defaultTransition={{
+						speed: 1500,
+						rotation: true,
+						effect: "fade",
+					}}
+					onCameraChange={(cam) => setCamera(cam)}
+					emitCamera={enableCrosshairFeature}
+					scenesList={scenes}
+				/>
+				{enableCrosshairFeature && (
+					<Crosshair enabled={crosshairEnabled} camera={camera} />
+				)}
 			</div>
 		</ThemeProvider>
 	);

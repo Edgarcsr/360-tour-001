@@ -32,12 +32,15 @@ interface PhotoSphereViewerProps {
 	lensflares?: any[];
 	compass?: boolean;
 	onMarkerClick?: (markerId: string) => void;
+	onSceneChange?: (scene: Scene) => void;
 	height?: string;
 	width?: string;
 	defaultTransition?: TransitionOptions;
 	onCameraChange?: (camera: { yaw: number; pitch: number }) => void;
 	// when true, the component will emit camera updates via onCameraChange
 	emitCamera?: boolean;
+	// list of all scenes for marker navigation
+	scenesList?: Scene[];
 }
 
 export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
@@ -53,6 +56,7 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 		height = "100vh",
 		width = "100%",
 		defaultTransition,
+		scenesList = [],
 	} = props;
 
 	const [camera, setCamera] = useState<{ yaw: number; pitch: number }>({
@@ -152,8 +156,9 @@ export const PhotoSphereViewer = forwardRef(function PhotoSphereViewer(
 				markersPlugin,
 				currentMarkers.concat(currentCallouts || []),
 				ref,
-				undefined,
+				props.onSceneChange,
 				onMarkerClick,
+				scenesList,
 			);
 		}
 	};
